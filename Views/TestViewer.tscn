@@ -7,5 +7,5 @@
 [node name="Terrain" parent="." instance=ExtResource( 1 )]
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.852019, -0.265595, 0.451135, -0.0026423, 0.859557, 0.511033, -0.523503, -0.436602, 0.731657, 9.19581, 7.4822, 14.1433 )
+transform = Transform( 0.852019, -0.265595, 0.451135, -0.0026423, 0.859557, 0.511033, -0.523503, -0.436602, 0.731657, 27.7339, 18.1096, 26.3368 )
 current = true
