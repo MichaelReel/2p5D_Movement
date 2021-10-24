@@ -1,7 +1,7 @@
 extends KinematicBody
 
 var velocity := Vector3.ZERO
-var gravity := 100
+var gravity := 9.8
 
 
 func _physics_process(delta : float):
