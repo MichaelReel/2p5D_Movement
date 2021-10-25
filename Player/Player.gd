@@ -44,4 +44,3 @@ func _physics_process(delta : float):
 	
 	# Move the player along the current velocity
 	vel = move_and_slide(vel, Vector3.UP)
-	

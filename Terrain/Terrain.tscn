@@ -5,6 +5,7 @@
 
 [node name="Terrain" type="Spatial"]
 script = ExtResource( 1 )
+floor_space = Rect2( -40, -40, 80, 80 )
 
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = ExtResource( 2 )
