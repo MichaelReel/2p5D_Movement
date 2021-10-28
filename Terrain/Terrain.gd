@@ -2,11 +2,13 @@ extends Spatial
 
 
 export (Rect2) var floor_space := Rect2(Vector2(-20, -20), Vector2(40, 40))
-export (int, 1, 10) var grid_height := 3
-export (int, 1, 10) var retaining_wall_height := 7
-export (float) var noise_threshold := 0.15
+export (int, 1, 10) var grid_height := 4
+export (int, 1, 10) var retaining_wall_height := 10
+export (float) var noise_threshold := 0.20
+export (float) var threshold_per_level := 0.05
 
 
+onready var navigation := $Navigation
 onready var grid_map := $GridMap
 onready var mesh_lib : MeshLibrary = grid_map.mesh_library
 onready var cube := mesh_lib.find_item_by_name("cube")
@@ -81,8 +83,8 @@ func _AABB_noise_fill(bounds: AABB, tile: int):
 
 
 func _noise_threshold(x : int, y : int, z : int) -> bool:
-	var value := noise.get_noise_3d(x, y, z)
-	return abs(value) < noise_threshold
+	var value := noise.get_noise_2d(x, z)
+	return abs(value) < noise_threshold - (y * threshold_per_level)
 
 
 func _AABB_walled_area(bounds: AABB, tile: int):
@@ -121,3 +123,4 @@ func _AABB_fill(bounds: AABB, tile: int):
 		for z in range(bounds.position.z, bounds.end.z):
 			for x in range(bounds.position.x, bounds.end.x):
 				grid_map.set_cell_item(x, y, z, tile)
+

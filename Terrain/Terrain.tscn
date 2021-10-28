@@ -16,3 +16,5 @@ data = {
 __meta__ = {
 "_editor_clip_": 0
 }
+
+[node name="Navigation" type="Navigation" parent="."]
