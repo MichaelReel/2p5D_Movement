@@ -19,6 +19,7 @@ onready var cube_grass := mesh_lib.find_item_by_name("cube_grass")
 onready var space := GridMap.INVALID_CELL_ITEM
 onready var noise := OpenSimplexNoise.new()
 
+var nav_mesh_scratch := SurfaceTool.new()
 
 func _ready():
 	_create_flat_base()
@@ -46,6 +47,7 @@ func _create_flat_base():
 		cube_grass
 	)
 
+
 func _create_water_features():
 	_AABB_noise_fill(
 		AABB(
@@ -55,6 +57,7 @@ func _create_water_features():
 		cube_water
 	)
 
+
 func _create_noise_layers():
 	_AABB_noise_fill(
 		AABB(
@@ -63,6 +66,7 @@ func _create_noise_layers():
 		),
 		cube_dirt
 	)
+
 
 func _create_retaining_wall():
 	_AABB_walled_area(
