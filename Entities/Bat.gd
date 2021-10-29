@@ -3,7 +3,7 @@ extends KinematicBody
 
 export (int) var current_HP : int = 10
 export (int) var max_HP : int = 10
-export (float) var move_speed : float = 500.0
+export (float) var move_speed : float = 200.0
 export (float) var gravity : float = 9.8
 
 

@@ -7,8 +7,8 @@ export (int) var damage : int = 1
 export (int) var gold : int = 0
 export (float) var attach_rate : float = 0.3
 export (float) var move_speed : float = 5.0
-export (float) var jump_force : float = 6.0
-export (float) var gravity : float = 9.8
+export (float) var jump_force : float = 10.0
+export (float) var gravity : float = 25
 
 var last_attack_time : int = 0
 var vel := Vector3.ZERO
