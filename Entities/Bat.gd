@@ -24,6 +24,7 @@ func _physics_process(delta : float):
 		if direction.length() < 1:
 			path_node += 1
 		else:
+			look_at(path[path_node], Vector3.UP)
 			vel = move_and_slide(direction.normalized() * move_speed * delta, Vector3.UP)
 
 
