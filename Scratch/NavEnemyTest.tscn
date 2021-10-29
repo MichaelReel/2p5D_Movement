@@ -9,6 +9,7 @@ mid_height = 3.0
 albedo_color = Color( 0.87451, 0.384314, 0.384314, 1 )
 
 [node name="NavEnemyTest" type="KinematicBody"]
+collision_layer = 0
 script = ExtResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
