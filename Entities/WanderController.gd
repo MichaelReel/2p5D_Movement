@@ -1,7 +1,5 @@
 extends Spatial
 
-signal target_position_updated(target_position)
-
 
 export (float) var wander_min : float = 8.0
 export (float) var wander_max : float = 32.0
@@ -16,12 +14,11 @@ onready var timer := $Timer
 
 
 func _ready():
-	target_position = start_position + _get_random_target()
+	update_target_position()
 
 
 func update_target_position():
 	target_position = start_position + _get_random_target()
-	emit_signal("target_position_updated", target_position)
 
 
 func _get_random_target() -> Vector3:
