@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Entities/Bat.gd" type="Script" id=1]
 [ext_resource path="res://Entities/WanderController.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Entities/PlayerDetectionZone.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Entities/state_material.tres" type="Material" id=4]
 
 [sub_resource type="Animation" id=1]
 resource_name = "flap"
@@ -81,7 +82,7 @@ transform = Transform( 0.891343, -0.45333, 0, 0.45333, 0.891343, 0, 0, 0, 1, 0, 
 [node name="WingMesh" type="MeshInstance" parent="AnimatedComponents/LeftWingPivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0, 0 )
 mesh = SubResource( 2 )
-material/0 = null
+material/0 = ExtResource( 4 )
 
 [node name="RightWingPivot" type="Spatial" parent="AnimatedComponents"]
 transform = Transform( 0.891343, 0.45333, 0, -0.45333, 0.891343, 0, 0, 0, 1, 0, 0.640566, 0 )
@@ -89,13 +90,15 @@ transform = Transform( 0.891343, 0.45333, 0, -0.45333, 0.891343, 0, 0, 0, 1, 0, 
 [node name="WingMesh" type="MeshInstance" parent="AnimatedComponents/RightWingPivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0, 0 )
 mesh = SubResource( 2 )
-material/0 = null
+material/0 = ExtResource( 4 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
 
 [node name="WanderController" parent="." instance=ExtResource( 2 )]
+wander_min = 6.0
+wander_max = 10.0
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 3 )]
 
