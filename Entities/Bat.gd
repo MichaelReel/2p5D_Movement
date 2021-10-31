@@ -19,7 +19,9 @@ export (float) var max_speed := 5.0
 export (float) var friction := 200.0
 export (float) var acceleration := 10.0
 export (float) var arrival_range := 1.0
+export (float) var path_arrival_range := 1.0
 export (float) var chase_update_time := 1.0
+export (float) var soft_push_factor := 30.0
 
 onready var wing_material : SpatialMaterial = $AnimatedComponents/LeftWingPivot/WingMesh.get_surface_material(0)
 onready var player_detection_zone := $PlayerDetectionZone
@@ -28,6 +30,7 @@ onready var wander_controller = $WanderController
 onready var state := _pick_random_state(NON_in_chase_stateS)
 onready var nav : Navigation = get_parent()
 onready var chase_reset_time := chase_update_time
+onready var soft_collision := $SoftCollision
 
 var velocity := Vector3.ZERO
 var path := []
@@ -44,6 +47,7 @@ func _physics_process(delta : float):
 		CHASE:
 			_in_chase_state(delta)
 	
+	_update_soft_collisions(delta)
 	_apply_velocity()
 
 
@@ -73,6 +77,7 @@ func _to_wander_state():
 	wander_controller.update_target_position()
 	_path_to_global_position(wander_controller.target_position)
 	_update_path_debug()
+
 
 func _to_chase_state():
 	var player : Spatial = player_detection_zone.player
@@ -117,6 +122,11 @@ func _next_non_in_chase_state():
 	_set_state(_pick_random_state(NON_in_chase_stateS))
 
 
+func _update_soft_collisions(delta : float):
+	if soft_collision.is_colliding():
+		velocity += soft_collision.get_push_vector() * delta * soft_push_factor
+
+
 func _apply_velocity():
 	var facing := global_transform.origin + Vector3(velocity.x, 0, velocity.z)
 	if facing != global_transform.origin:
@@ -147,7 +157,7 @@ func _update_velocity_for_pathed_position(delta : float):
 	if path_node < path.size():
 		var distance : float = global_transform.origin.distance_to(path[path_node])
 		var direction : Vector3 = global_transform.origin.direction_to(path[path_node])
-		if distance <= 0.2:
+		if distance <= path_arrival_range:
 			path_node += 1
 		else:
 			velocity = velocity.move_toward(direction * max_speed, acceleration * delta)

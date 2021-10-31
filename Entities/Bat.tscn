@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Entities/Bat.gd" type="Script" id=1]
 [ext_resource path="res://Entities/WanderController.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Entities/PlayerDetectionZone.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Entities/state_material.tres" type="Material" id=4]
+[ext_resource path="res://Overlap/SoftCollision.tscn" type="PackedScene" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "flap"
@@ -65,6 +66,8 @@ size = Vector3( 0.75, 0.1, 1 )
 radius = 8.0
 height = 4.0
 
+[sub_resource type="CylinderShape" id=4]
+
 [node name="Bat" type="KinematicBody"]
 collision_layer = 0
 script = ExtResource( 1 )
@@ -106,4 +109,11 @@ wander_max = 10.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
 shape = SubResource( 3 )
 
+[node name="SoftCollision" parent="." instance=ExtResource( 5 )]
+
+[node name="CollisionShape" parent="SoftCollision" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+shape = SubResource( 4 )
+
 [editable path="PlayerDetectionZone"]
+[editable path="SoftCollision"]

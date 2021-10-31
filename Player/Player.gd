@@ -36,7 +36,8 @@ func _physics_process(delta : float):
 	vel.z = dir.z * move_speed
 	
 	# Gravity!
-	vel.y -= gravity * delta
+	if not is_on_floor():
+		vel.y -= gravity * delta
 	
 	# Jump input
 	if Input.is_action_pressed("move_jump") and is_on_floor():
