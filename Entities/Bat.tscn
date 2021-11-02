@@ -1,10 +1,12 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Entities/Bat.gd" type="Script" id=1]
 [ext_resource path="res://Entities/WanderController.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Entities/PlayerDetectionZone.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Entities/state_material.tres" type="Material" id=4]
 [ext_resource path="res://Overlap/SoftCollision.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Classes/Stats.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Overlap/Vunerable.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "flap"
@@ -68,6 +70,43 @@ height = 4.0
 
 [sub_resource type="CylinderShape" id=4]
 
+[sub_resource type="CapsuleShape" id=5]
+radius = 0.7
+height = 0.4
+
+[sub_resource type="Animation" id=6]
+resource_name = "start"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedComponents/LeftWingPivot/WingMesh:material/0:albedo_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.201 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.960784, 0.917647, 0.576471, 1 ), Color( 0.101961, 0.0235294, 0.270588, 1 ), Color( 1, 1, 1, 1 ), Color( 0.960784, 0.917647, 0.576471, 1 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "stop"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedComponents/LeftWingPivot/WingMesh:material/0:albedo_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
 [node name="Bat" type="KinematicBody"]
 collision_layer = 0
 script = ExtResource( 1 )
@@ -80,7 +119,7 @@ anims/flap = SubResource( 1 )
 transform = Transform( 1, 0, 0, 0, 0.843541, -0.537064, 0, 0.537064, 0.843541, 0, 0.5, -0.33308 )
 
 [node name="LeftWingPivot" type="Spatial" parent="AnimatedComponents"]
-transform = Transform( 0.891343, -0.45333, 0, 0.45333, 0.891343, 0, 0, 0, 1, 0, 0.640566, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="WingMesh" type="MeshInstance" parent="AnimatedComponents/LeftWingPivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0, 0 )
@@ -88,7 +127,7 @@ mesh = SubResource( 2 )
 material/0 = ExtResource( 4 )
 
 [node name="RightWingPivot" type="Spatial" parent="AnimatedComponents"]
-transform = Transform( 0.891343, 0.45333, 0, -0.45333, 0.891343, 0, 0, 0, 1, 0, 0.640566, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="WingMesh" type="MeshInstance" parent="AnimatedComponents/RightWingPivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0, 0 )
@@ -115,11 +154,26 @@ shape = SubResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 shape = SubResource( 4 )
 
-[node name="TestDeathTimer" type="Timer" parent="."]
-wait_time = 5.0
-autostart = true
+[node name="Stats" parent="." instance=ExtResource( 6 )]
+max_health = 2
 
-[connection signal="timeout" from="TestDeathTimer" to="." method="_on_TestDeathTimer_timeout"]
+[node name="Vunerable" parent="." instance=ExtResource( 7 )]
+collision_layer = 16
+
+[node name="CollisionShape" parent="Vunerable" index="0"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1, 0.1 )
+shape = SubResource( 5 )
+
+[node name="InvunerabilityAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/start = SubResource( 6 )
+anims/stop = SubResource( 7 )
+
+[connection signal="no_health" from="Stats" to="." method="_on_Stats_no_health"]
+[connection signal="damage_received" from="Vunerable" to="." method="_on_Vunerable_damage_received"]
+[connection signal="invincibility_ended" from="Vunerable" to="." method="_on_Vunerable_invincibility_ended"]
+[connection signal="invincibility_started" from="Vunerable" to="." method="_on_Vunerable_invincibility_started"]
+[connection signal="animation_finished" from="InvunerabilityAnimationPlayer" to="." method="_on_InvunerabilityAnimationPlayer_animation_finished"]
 
 [editable path="PlayerDetectionZone"]
 [editable path="SoftCollision"]
+[editable path="Vunerable"]
