@@ -1,10 +1,7 @@
 extends KinematicBody
 
 
-enum {
-	MOVE,
-	ATTACK
-}
+
 
 
 export (float) var acceleration := 150.0
@@ -15,22 +12,30 @@ export (float) var jump_force := 10.0
 export (float) var gravity := 25.0
 export (bool) var air_control := true
 
+onready var animation_player := $AnimationPlayer
 
-var state : int = MOVE
 var velocity := Vector3.ZERO
 var horizontal_velocity := Vector2.ZERO
 
 
 func _physics_process(delta):
-	match state:
-		MOVE:
-			move_state(delta)
-		ATTACK:
-			state = MOVE
-
-
-func move_state(delta : float):
 	var input_vector := _normalized_input_vector()
+	perform_input_movement(delta, input_vector)
+	
+	# Gravity!
+	if not is_on_floor():
+		velocity += Vector3.DOWN * gravity * delta
+
+	# Jump input
+	if Input.is_action_pressed("move_jump") and is_on_floor():
+		velocity += Vector3.UP * jump_force
+		
+	velocity = move_and_slide(velocity, Vector3.UP)
+	
+	if Input.is_action_just_pressed("move_attack"):
+		animation_player.play("attack")
+
+func perform_input_movement(delta : float, input_vector : Vector2):
 	if input_vector != Vector2.ZERO and _movement_allowed():
 		# Speed up - Apply player WSAD movement as horizontal acceleration
 		var basis_z := Vector2(transform.basis.z.x, transform.basis.z.z)
@@ -48,19 +53,10 @@ func move_state(delta : float):
 		
 	velocity.x = horizontal_velocity.x
 	velocity.z = horizontal_velocity.y
-		
-	# Gravity!
-	if not is_on_floor():
-		velocity += Vector3.DOWN * gravity * delta
 
-	# Jump input
-	if Input.is_action_pressed("move_jump") and is_on_floor():
-		velocity += Vector3.UP * jump_force
-		
-	velocity = move_and_slide(velocity, Vector3.UP)
-	
-	if Input.is_action_just_pressed("move_attack"):
-		state = ATTACK
+
+func end_attack():
+	animation_player.play("idle")
 
 
 func _movement_allowed() -> bool:

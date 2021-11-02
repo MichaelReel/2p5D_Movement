@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Player/CameraOrbit.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.gd" type="Script" id=2]
@@ -17,6 +17,53 @@ size = Vector3( 0.1, 1.5, 0.25 )
 
 [sub_resource type="SpatialMaterial" id=5]
 albedo_color = Color( 0.12549, 0.384314, 0.0352941, 1 )
+
+[sub_resource type="Animation" id=6]
+resource_name = "attack"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("WeaponHolder:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.25, 0.35, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 47.099 ), Vector3( 2.71385e-14, 49.449, 90 ), Vector3( -10.086, 100.263, 90 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "end_attack"
+} ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "idle"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("WeaponHolder:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.5, 1, 0.035 ) ]
+}
 
 [node name="Player" type="KinematicBody"]
 collision_layer = 2
@@ -52,3 +99,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 1, 0.6 )
 enabled = true
 cast_to = Vector3( 0, 0, 1.5 )
 collision_mask = 8
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/attack = SubResource( 6 )
+anims/idle = SubResource( 7 )
