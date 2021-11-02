@@ -7,7 +7,7 @@ enum {
 	CHASE
 }
 
-# const DeathEffect := preload("<path_to_death_effect_scene>"
+const DeathEffect := preload("res://Entities/DeathEffect.tscn")
 const NON_in_chase_stateS := [IDLE, WANDER]
 const STATE_COLORS := {
 	IDLE: Color(1.0, 1.0, 0.0, 1.0),
@@ -171,4 +171,15 @@ func _seek_player():
 func _pick_random_state(state_list : Array) -> int:
 	state_list.shuffle()
 	return state_list.front()
+	
 
+func _create_death_effect():
+	var death_effect := DeathEffect.instance()
+	parent.add_child(death_effect)
+	death_effect.global_transform.origin = global_transform.origin
+	death_effect.emitting = true
+
+
+
+func _on_TestDeathTimer_timeout():
+	_create_death_effect()
