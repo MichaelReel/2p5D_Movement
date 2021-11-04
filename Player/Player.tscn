@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Player/CameraOrbit.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.gd" type="Script" id=2]
-[ext_resource path="res://Entities/HitEffect.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Effects/HitEffect.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.5

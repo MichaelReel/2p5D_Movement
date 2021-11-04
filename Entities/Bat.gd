@@ -7,7 +7,7 @@ enum {
 	CHASE
 }
 
-const DeathEffect := preload("res://Entities/DeathEffect.tscn")
+const DeathEffect := preload("res://Effects/DeathEffect.tscn")
 const NON_CHASE_STATES := [IDLE, WANDER]
 const STATE_COLORS := {
 	IDLE: Color(1.0, 1.0, 0.0, 1.0),
