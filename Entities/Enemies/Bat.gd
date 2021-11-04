@@ -143,12 +143,16 @@ func _path_to_global_position(target_pos : Vector3):
 	path_node = 0
 
 
-func _update_path_debug():
-	# Draw - Use raycasts to show up the path for debug
+func _clear_path_debug():
 	for rc in cast_path:
 		parent.remove_child(rc)
 		rc.queue_free()
 	cast_path.clear()
+
+
+func _update_path_debug():
+	# Draw - Use raycasts to show up the path for debug
+	_clear_path_debug()
 	for pn in len(path) - 1:
 		cast_path.append(RayCast.new())
 		parent.add_child(cast_path[pn])
@@ -178,6 +182,7 @@ func _pick_random_state(state_list : Array) -> int:
 
 
 func _create_death_effect():
+	_clear_path_debug()
 	var death_effect := DeathEffect.instance()
 	parent.add_child(death_effect)
 	death_effect.global_transform.origin = global_transform.origin

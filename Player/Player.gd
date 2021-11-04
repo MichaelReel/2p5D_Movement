@@ -33,6 +33,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("move_attack"):
 		animation_player.play("attack")
 
+
 func perform_input_movement(delta : float, input_vector : Vector2):
 	if input_vector != Vector2.ZERO and _movement_allowed():
 		# Speed up - Apply player WSAD movement as horizontal acceleration

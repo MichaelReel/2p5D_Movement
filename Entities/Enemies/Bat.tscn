@@ -1,12 +1,12 @@
 [gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://Entities/Bat.gd" type="Script" id=1]
-[ext_resource path="res://Entities/WanderController.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Entities/PlayerDetectionZone.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Entities/state_material.tres" type="Material" id=4]
-[ext_resource path="res://Overlap/SoftCollision.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Classes/Stats.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Overlap/Vunerable.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Overlap/Vunerable.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Overlap/SoftCollision.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Classes/Stats.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Entities/Enemies/Bat.gd" type="Script" id=4]
+[ext_resource path="res://Entities/PlayerDetectionZone.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Entities/WanderController.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Entities/state_material.tres" type="Material" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "flap"
@@ -109,7 +109,7 @@ tracks/0/keys = {
 
 [node name="Bat" type="KinematicBody"]
 collision_layer = 0
-script = ExtResource( 1 )
+script = ExtResource( 4 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "flap"
@@ -124,7 +124,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 [node name="WingMesh" type="MeshInstance" parent="AnimatedComponents/LeftWingPivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0, 0 )
 mesh = SubResource( 2 )
-material/0 = ExtResource( 4 )
+material/0 = ExtResource( 7 )
 
 [node name="RightWingPivot" type="Spatial" parent="AnimatedComponents"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
@@ -132,32 +132,32 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 [node name="WingMesh" type="MeshInstance" parent="AnimatedComponents/RightWingPivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0, 0 )
 mesh = SubResource( 2 )
-material/0 = ExtResource( 4 )
+material/0 = ExtResource( 7 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
 autostart = true
 
-[node name="WanderController" parent="." instance=ExtResource( 2 )]
+[node name="WanderController" parent="." instance=ExtResource( 6 )]
 wander_min = 6.0
 wander_max = 10.0
 
-[node name="PlayerDetectionZone" parent="." instance=ExtResource( 3 )]
+[node name="PlayerDetectionZone" parent="." instance=ExtResource( 5 )]
 
 [node name="CollisionShape" parent="PlayerDetectionZone" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
 shape = SubResource( 3 )
 
-[node name="SoftCollision" parent="." instance=ExtResource( 5 )]
+[node name="SoftCollision" parent="." instance=ExtResource( 2 )]
 
 [node name="CollisionShape" parent="SoftCollision" index="0"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 shape = SubResource( 4 )
 
-[node name="Stats" parent="." instance=ExtResource( 6 )]
+[node name="Stats" parent="." instance=ExtResource( 3 )]
 max_health = 2
 
-[node name="Vunerable" parent="." instance=ExtResource( 7 )]
+[node name="Vunerable" parent="." instance=ExtResource( 1 )]
 collision_layer = 16
 
 [node name="CollisionShape" parent="Vunerable" index="0"]
