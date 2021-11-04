@@ -1,8 +1,7 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Player/CameraOrbit.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.gd" type="Script" id=2]
-[ext_resource path="res://Effects/HitEffect.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.5
@@ -123,6 +122,3 @@ collide_with_areas = true
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/attack = SubResource( 6 )
 anims/idle = SubResource( 7 )
-
-[node name="HitEffect" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.282755, 1.03685, 1.12928 )
