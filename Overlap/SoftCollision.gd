@@ -13,4 +13,5 @@ func get_push_vector() -> Vector3:
 		push_vector = area.global_transform.origin.direction_to(
 			global_transform.origin
 		).normalized()
+		push_vector.y = 0.0
 	return push_vector
