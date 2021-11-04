@@ -55,6 +55,10 @@ func _physics_process(delta : float):
 	_apply_velocity()
 
 
+func reset_start_position():
+	wander_controller.reset_start_position()
+
+
 func _set_state(new_state : int):
 	if state != new_state:
 		state = new_state

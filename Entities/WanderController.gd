@@ -17,6 +17,10 @@ func _ready():
 	update_target_position()
 
 
+func reset_start_position():
+	start_position = global_transform.origin
+
+
 func update_target_position():
 	target_position = start_position + _get_random_target()
 

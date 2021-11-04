@@ -24,6 +24,7 @@ func _spawn_related_entities():
 		var bat = Bat.instance()
 		parent.add_child(bat)
 		bat.global_transform.origin = location
+		bat.reset_start_position()
 		
 
 
