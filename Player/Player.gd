@@ -10,7 +10,7 @@ export (float) var gravity := 25.0
 export (bool) var air_control := true
 
 onready var animation_player := $AnimationPlayer
-onready var attack_ray_cast := $WeaponHolder/AttackRayCast
+onready var attack_ray_cast := $WeaponHolder/MeleeWeaponHolder/AttackRayCast
 
 var velocity := Vector3.ZERO
 var horizontal_velocity := Vector2.ZERO
@@ -67,10 +67,4 @@ func _normalized_input_vector() -> Vector2:
 		Input.get_action_strength("move_left") - Input.get_action_strength("move_right"),
 		Input.get_action_strength("move_forward") - Input.get_action_strength("move_backward")
 	).normalized()
-
-
-func _check_enemy_area():
-	if attack_ray_cast.is_colliding():
-		var area : Area = attack_ray_cast.get_collider()
-		area.ray_cast_hit(attack_ray_cast, 1)
 

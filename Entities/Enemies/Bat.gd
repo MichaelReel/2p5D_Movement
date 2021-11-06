@@ -39,7 +39,6 @@ onready var chase_reset_time := chase_update_time
 var velocity := Vector3.ZERO
 var path := []
 var path_node := 0
-var cast_path := []
 
 
 func _physics_process(delta : float):
@@ -77,21 +76,18 @@ func _set_state(new_state : int):
 func _to_idle_state():
 	path.clear()
 	path_node = 0
-	_update_path_debug()
 	wander_controller.start_wander_timer()
 
 
 func _to_wander_state():
 	wander_controller.update_target_position()
 	_path_to_global_position(wander_controller.target_position)
-	_update_path_debug()
 
 
 func _to_chase_state():
 	var player : Spatial = player_detection_zone.player
 	if player != null:
 		_path_to_global_position(player.global_transform.origin)
-		_update_path_debug()
 
 
 func _in_idle_state(delta : float):
@@ -119,7 +115,6 @@ func _in_chase_state(delta):
 		var player : Spatial = player_detection_zone.player
 		if player != null:
 			_path_to_global_position(player.global_transform.origin)
-			_update_path_debug()
 		else:
 			_next_non_in_chase_state()
 		
@@ -147,24 +142,6 @@ func _path_to_global_position(target_pos : Vector3):
 	path_node = 0
 
 
-func _clear_path_debug():
-	for rc in cast_path:
-		parent.remove_child(rc)
-		rc.queue_free()
-	cast_path.clear()
-
-
-func _update_path_debug():
-	# Draw - Use raycasts to show up the path for debug
-	_clear_path_debug()
-	for pn in len(path) - 1:
-		cast_path.append(RayCast.new())
-		parent.add_child(cast_path[pn])
-		cast_path[pn].global_transform.origin = path[pn]
-		cast_path[pn].set_cast_to(path[pn + 1] - path[pn])
-		cast_path[pn].set_enabled(true)
-
-
 func _update_velocity_for_pathed_position(delta : float):
 	if path_node < path.size():
 		var distance : float = global_transform.origin.distance_to(path[path_node])
@@ -186,7 +163,6 @@ func _pick_random_state(state_list : Array) -> int:
 
 
 func _create_death_effect():
-	_clear_path_debug()
 	var death_effect := DeathEffect.instance()
 	parent.add_child(death_effect)
 	death_effect.global_transform.origin = global_transform.origin

@@ -29,12 +29,11 @@ func start_invincibility(duration : float):
 	timer.start(duration)
 
 
-func create_hit_effect(ray_cast: RayCast):
+func create_hit_effect(collider: Spatial):
 	var hit_effect := HitEffect.instance()
 	parent.add_child(hit_effect)
-	hit_effect.global_transform.origin = ray_cast.global_transform.origin
+	hit_effect.global_transform.origin = collider.global_transform.origin
 	hit_effect.emitting = true
-	
 
 
 func _on_Timer_timeout():
@@ -55,3 +54,12 @@ func ray_cast_hit(ray_cast: RayCast, damage : int):
 	"""Call on this area by ray cast that detects the collision"""
 	emit_signal("damage_received", damage)
 	create_hit_effect(ray_cast)
+
+
+func _on_Vunerable_area_entered(area):
+	var damage : float = 1
+	if damage in area:
+		damage = area.damage
+	emit_signal("damage_received", damage)
+	create_hit_effect(area)
+
