@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Entities/PlayerDetectionZone.gd" type="Script" id=1]
+[ext_resource path="res://Overlap/PlayerDetectionZone.gd" type="Script" id=1]
 
 [node name="PlayerDetectionZone" type="Area"]
 collision_layer = 0
