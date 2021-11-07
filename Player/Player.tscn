@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Player/CameraOrbit.gd" type="Script" id=1]
 [ext_resource path="res://Player/Player.gd" type="Script" id=2]
 [ext_resource path="res://Overlap/SoftCollision.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Overlap/Damage.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Overlap/Vunerable.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.5
@@ -69,6 +70,9 @@ tracks/0/keys = {
 }
 
 [sub_resource type="CapsuleShape" id=10]
+radius = 0.45
+
+[sub_resource type="CapsuleShape" id=11]
 radius = 0.5
 
 [node name="Player" type="KinematicBody"]
@@ -93,7 +97,7 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1, 1, 
 current = true
 
 [node name="WeaponHolder" type="Spatial" parent="."]
-transform = Transform( -0.172324, 0.178167, 0.968794, 0.984546, -4.30359e-08, 0.175126, 0.0312017, 0.984, -0.175413, -0.5, 1, 0.035 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, 0.035 )
 
 [node name="MeleeWeaponHolder" type="Spatial" parent="WeaponHolder"]
 
@@ -127,5 +131,15 @@ anims/idle = SubResource( 9 )
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1, 0 )
 shape = SubResource( 10 )
 
+[node name="Vunerable" parent="." instance=ExtResource( 5 )]
+collision_layer = 4
+
+[node name="CollisionShape" parent="Vunerable" index="0"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1, 0 )
+shape = SubResource( 11 )
+
+[connection signal="damage_received" from="Vunerable" to="." method="_on_Vunerable_damage_received"]
+
 [editable path="WeaponHolder/MeleeWeaponHolder/Damage"]
 [editable path="SoftCollision"]
+[editable path="Vunerable"]

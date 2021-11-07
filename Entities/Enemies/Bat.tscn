@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Overlap/Vunerable.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Overlap/SoftCollision.tscn" type="PackedScene" id=2]
@@ -7,13 +7,53 @@
 [ext_resource path="res://Overlap/PlayerDetectionZone.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Entities/WanderController.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Entities/state_material.tres" type="Material" id=7]
+[ext_resource path="res://Overlap/Damage.tscn" type="PackedScene" id=8]
+
+[sub_resource type="Animation" id=8]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedComponents/Body:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimatedComponents/Body/RightWingPivot:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedComponents/Body/LeftWingPivot:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=1]
 resource_name = "flap"
 length = 0.6
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("AnimatedComponents/LeftWingPivot:translation")
+tracks/0/path = NodePath("AnimatedComponents/Body/LeftWingPivot:rotation_degrees")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -22,10 +62,10 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 1, 0 ), Vector3( 0, 0.6, 0 ), Vector3( 0, 1, 0 ), Vector3( 0, 1.4, 0 ), Vector3( 0, 1, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 30 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, -60 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("AnimatedComponents/LeftWingPivot:rotation_degrees")
+tracks/1/path = NodePath("AnimatedComponents/Body/RightWingPivot:rotation_degrees")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -34,10 +74,10 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 30 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, -60 ), Vector3( 0, 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -30 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, 60 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("AnimatedComponents/RightWingPivot:translation")
+tracks/2/path = NodePath("AnimatedComponents/Body:translation")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -48,27 +88,22 @@ tracks/2/keys = {
 "update": 0,
 "values": [ Vector3( 0, 1, 0 ), Vector3( 0, 0.6, 0 ), Vector3( 0, 1, 0 ), Vector3( 0, 1.4, 0 ), Vector3( 0, 1, 0 ) ]
 }
-tracks/3/type = "value"
-tracks/3/path = NodePath("AnimatedComponents/RightWingPivot:rotation_degrees")
-tracks/3/interp = 2
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -30 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, 60 ), Vector3( 0, 0, 0 ) ]
-}
 
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 0.75, 0.1, 1 )
+
+[sub_resource type="PrismMesh" id=9]
+size = Vector3( 0.4, 0.2, 0.3 )
+
+[sub_resource type="SphereShape" id=10]
+radius = 0.2
 
 [sub_resource type="CapsuleShape" id=3]
 radius = 8.0
 height = 4.0
 
 [sub_resource type="CylinderShape" id=4]
+radius = 0.8
 
 [sub_resource type="CapsuleShape" id=5]
 radius = 0.7
@@ -79,7 +114,7 @@ resource_name = "start"
 length = 0.2
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("AnimatedComponents/LeftWingPivot/WingMesh:material/0:albedo_color")
+tracks/0/path = NodePath("AnimatedComponents/Body/LeftWingPivot/WingMesh:material/0:albedo_color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -95,7 +130,7 @@ tracks/0/keys = {
 resource_name = "stop"
 length = 0.1
 tracks/0/type = "value"
-tracks/0/path = NodePath("AnimatedComponents/LeftWingPivot/WingMesh:material/0:albedo_color")
+tracks/0/path = NodePath("AnimatedComponents/Body/LeftWingPivot/WingMesh:material/0:albedo_color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -113,26 +148,42 @@ script = ExtResource( 4 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "flap"
+anims/RESET = SubResource( 8 )
 anims/flap = SubResource( 1 )
 
 [node name="AnimatedComponents" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.843541, -0.537064, 0, 0.537064, 0.843541, 0, 0.5, -0.33308 )
 
-[node name="LeftWingPivot" type="Spatial" parent="AnimatedComponents"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+[node name="Body" type="Spatial" parent="AnimatedComponents"]
 
-[node name="WingMesh" type="MeshInstance" parent="AnimatedComponents/LeftWingPivot"]
+[node name="RightWingPivot" type="Spatial" parent="AnimatedComponents/Body"]
+transform = Transform( 0.90783, 0.419339, 0, -0.419339, 0.90783, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="WingMesh" type="MeshInstance" parent="AnimatedComponents/Body/RightWingPivot"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = ExtResource( 7 )
+
+[node name="LeftWingPivot" type="Spatial" parent="AnimatedComponents/Body"]
+transform = Transform( 0.90783, -0.419339, 0, 0.419339, 0.90783, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="WingMesh" type="MeshInstance" parent="AnimatedComponents/Body/LeftWingPivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = ExtResource( 7 )
 
-[node name="RightWingPivot" type="Spatial" parent="AnimatedComponents"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-
-[node name="WingMesh" type="MeshInstance" parent="AnimatedComponents/RightWingPivot"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0, 0 )
-mesh = SubResource( 2 )
+[node name="HeadMesh" type="MeshInstance" parent="AnimatedComponents/Body"]
+transform = Transform( 1, 0, 0, 0, -0.843542, -0.537064, 0, 0.537064, -0.843542, 0, -0.168639, -0.643161 )
+mesh = SubResource( 9 )
 material/0 = ExtResource( 7 )
+
+[node name="Damage" parent="AnimatedComponents/Body" instance=ExtResource( 8 )]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape" parent="AnimatedComponents/Body/Damage" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.65 )
+shape = SubResource( 10 )
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -174,6 +225,7 @@ anims/stop = SubResource( 7 )
 [connection signal="invincibility_started" from="Vunerable" to="." method="_on_Vunerable_invincibility_started"]
 [connection signal="animation_finished" from="InvunerabilityAnimationPlayer" to="." method="_on_InvunerabilityAnimationPlayer_animation_finished"]
 
+[editable path="AnimatedComponents/Body/Damage"]
 [editable path="PlayerDetectionZone"]
 [editable path="SoftCollision"]
 [editable path="Vunerable"]

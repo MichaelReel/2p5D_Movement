@@ -68,3 +68,6 @@ func _normalized_input_vector() -> Vector2:
 		Input.get_action_strength("move_forward") - Input.get_action_strength("move_backward")
 	).normalized()
 
+
+func _on_Vunerable_damage_received(_damage):
+	print("Player Hit!")

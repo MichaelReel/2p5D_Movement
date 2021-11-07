@@ -26,7 +26,7 @@ export (float) var hurt_timeout := 0.4
 
 onready var parent := get_parent()  # For death effect + debug, could be scene root
 onready var nav : Navigation = get_parent()  # Specifically for navigation
-onready var wing_material : SpatialMaterial = $AnimatedComponents/LeftWingPivot/WingMesh.get_surface_material(0)
+onready var wing_material : SpatialMaterial = $AnimatedComponents/Body/LeftWingPivot/WingMesh.get_surface_material(0)
 onready var player_detection_zone := $PlayerDetectionZone
 onready var wander_controller = $WanderController
 onready var soft_collision := $SoftCollision

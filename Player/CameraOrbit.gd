@@ -1,7 +1,7 @@
 extends Spatial
 
 
-export (float) var look_sensitivity : float = 15.0
+export (float) var look_sensitivity : float = 40.0
 export (float) var min_look_angle : float = -20.0
 export (float) var max_look_angle : float = 75.0
 
