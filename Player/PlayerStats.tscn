@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Classes/Stats.gd" type="Script" id=1]
+
+[node name="PlayerStats" type="Node"]
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": "This is an autoloaded version of the generic stats scene so we access the player stats from both the player entity and the UI."
+}
+max_health = 10

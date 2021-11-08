@@ -14,6 +14,10 @@ config/name="2p5D_Movement"
 run/main_scene="res://Views/TestTrialsView.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+PlayerStats="*res://Player/PlayerStats.tscn"
+
 [input]
 
 move_forward={

@@ -8,12 +8,21 @@ export (float) var max_speed := 5.0
 export (float) var jump_force := 10.0
 export (float) var gravity := 25.0
 export (bool) var air_control := true
+export (float) var spawn_timeout := 1.0
+export (float) var hurt_timeout := 0.3
 
 onready var animation_player := $AnimationPlayer
 onready var attack_ray_cast := $WeaponHolder/MeleeWeaponHolder/AttackRayCast
+onready var hurt_box := $Vunerable
+onready var invincibility_animation_player := $InvincibilityAnimationPlayer
+onready var stats := PlayerStats
 
 var velocity := Vector3.ZERO
 var horizontal_velocity := Vector2.ZERO
+
+
+func _ready():
+	hurt_box.start_invincibility(spawn_timeout)
 
 
 func _physics_process(delta):
@@ -59,6 +68,10 @@ func end_attack():
 
 
 func _movement_allowed() -> bool:
+	"""
+	Player can always accelerate if they are on the ground
+	If in the air, then `air_control` must be set to allow acceleration
+	"""
 	return air_control or is_on_floor()
 
 
@@ -69,5 +82,15 @@ func _normalized_input_vector() -> Vector2:
 	).normalized()
 
 
-func _on_Vunerable_damage_received(_damage):
-	print("Player Hit!")
+func _on_Vunerable_damage_received(damage):
+	stats.health -= damage
+	hurt_box.start_invincibility(hurt_timeout)
+	print("Health: " + str(stats.health))
+
+
+func _on_Vunerable_invincibility_started():
+	invincibility_animation_player.play("start")
+
+
+func _on_Vunerable_invincibility_ended():
+	invincibility_animation_player.play("stop")

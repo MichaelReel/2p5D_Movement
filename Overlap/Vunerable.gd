@@ -50,15 +50,9 @@ func _on_Vunerable_invincibility_ended():
 	monitorable = true
 
 
-func ray_cast_hit(ray_cast: RayCast, damage : int):
-	"""Call on this area by ray cast that detects the collision"""
-	emit_signal("damage_received", damage)
-	create_hit_effect(ray_cast)
-
-
 func _on_Vunerable_area_entered(area):
 	var damage : float = 1
-	if damage in area:
+	if "damage" in area:
 		damage = area.damage
 	emit_signal("damage_received", damage)
 	create_hit_effect(area)

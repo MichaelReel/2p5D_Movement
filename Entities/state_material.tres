@@ -2,3 +2,4 @@
 
 [resource]
 resource_local_to_scene = true
+albedo_color = Color( 0.960784, 0.917647, 0.576471, 1 )
