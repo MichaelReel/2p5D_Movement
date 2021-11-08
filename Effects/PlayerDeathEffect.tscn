@@ -9,24 +9,26 @@ _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 curve = SubResource( 1 )
 
 [sub_resource type="ParticlesMaterial" id=3]
+lifetime_randomness = 0.5
 emission_shape = 1
 emission_sphere_radius = 1.0
 direction = Vector3( 0, 1, 0 )
 spread = 0.0
-gravity = Vector3( 0, -70, 0 )
-initial_velocity = 10.0
+gravity = Vector3( 0, -80, 0 )
+initial_velocity = 30.0
 angular_velocity = 20.0
 linear_accel_curve = SubResource( 2 )
 radial_accel = 45.0
 damping = 10.0
 damping_random = 1.0
 
-[sub_resource type="CubeMesh" id=4]
-size = Vector3( 0.5, 0.5, 0.5 )
+[sub_resource type="SphereMesh" id=4]
+radial_segments = 4
+rings = 2
 
-[node name="DeathEffect" type="Particles"]
+[node name="PlayerDeathEffect" type="Particles"]
 emitting = false
-amount = 20
+amount = 50
 lifetime = 3.0
 one_shot = true
 explosiveness = 1.0

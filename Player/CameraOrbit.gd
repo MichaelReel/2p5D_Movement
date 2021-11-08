@@ -8,24 +8,12 @@ export (float) var max_look_angle : float = 75.0
 var mouse_delta : Vector2 = Vector2.ZERO
 
 onready var player : KinematicBody = get_parent()
-
-
-func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+onready var camera := $Camera
 
 
 func _input(event : InputEvent):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		mouse_delta = event.relative
-	
-	if event.is_action_pressed("ui_cancel"):
-		if Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-		else:
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	
-	if event is InputEventMouseButton and Input.get_mouse_mode() != Input.MOUSE_MODE_CAPTURED:
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _process(delta : float):
@@ -41,3 +29,10 @@ func _process(delta : float):
 	
 	# Clear the mouse_delta
 	mouse_delta = Vector2.ZERO
+
+
+func move_camera_to_scene(new_scene : Spatial):
+	var transform : Transform = camera.global_transform
+	remove_child(camera)
+	new_scene.add_child(camera)
+	camera.global_transform = transform

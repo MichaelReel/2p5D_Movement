@@ -1,6 +1,8 @@
 extends KinematicBody
 
 
+const DeathEffect := preload("res://Effects/PlayerDeathEffect.tscn")
+
 export (float) var acceleration := 150.0
 export (float) var air_friction := 4.0
 export (float) var ground_friction := 80.0
@@ -15,13 +17,16 @@ onready var animation_player := $AnimationPlayer
 onready var attack_ray_cast := $WeaponHolder/MeleeWeaponHolder/AttackRayCast
 onready var hurt_box := $Vunerable
 onready var invincibility_animation_player := $InvincibilityAnimationPlayer
+onready var camera_arm := $CameraOrbit
 onready var stats := PlayerStats
+onready var parent := get_parent()
 
 var velocity := Vector3.ZERO
 var horizontal_velocity := Vector2.ZERO
 
 
 func _ready():
+	var _err = stats.connect("no_health", self, "_on_PlayerStats_no_health")
 	hurt_box.start_invincibility(spawn_timeout)
 
 
@@ -94,3 +99,21 @@ func _on_Vunerable_invincibility_started():
 
 func _on_Vunerable_invincibility_ended():
 	invincibility_animation_player.play("stop")
+
+
+func _move_camera_to_parent():
+	camera_arm.move_camera_to_scene(parent)
+
+
+func _create_death_effect():
+	var death_effect := DeathEffect.instance()
+	parent.add_child(death_effect)
+	death_effect.global_transform.origin = global_transform.origin
+	death_effect.emitting = true
+
+
+func _on_PlayerStats_no_health():
+	_move_camera_to_parent()
+	_create_death_effect()
+	queue_free()
+	
