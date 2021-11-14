@@ -3,6 +3,12 @@ extends KinematicBody
 
 const DeathEffect := preload("res://Effects/PlayerDeathEffect.tscn")
 
+enum {
+	MOVE,
+	JUMP,
+	STAND
+}
+
 export (float) var acceleration := 150.0
 export (float) var air_friction := 4.0
 export (float) var ground_friction := 80.0
@@ -13,16 +19,19 @@ export (bool) var air_control := true
 export (float) var spawn_timeout := 1.0
 export (float) var hurt_timeout := 0.3
 
-onready var animation_player := $AnimationPlayer
+onready var animation_player := $WeaponHolder/MeleeWeaponHolder/AnimationPlayer
 onready var attack_ray_cast := $WeaponHolder/MeleeWeaponHolder/AttackRayCast
 onready var hurt_box := $Vunerable
 onready var invincibility_animation_player := $InvincibilityAnimationPlayer
+onready var lower_body := $Body/Waist
+onready var lower_body_animation_player := $Body/Waist/AnimationPlayer
 onready var camera_arm := $CameraOrbit
 onready var stats := PlayerStats
 onready var parent := get_parent()
 
 var velocity := Vector3.ZERO
 var horizontal_velocity := Vector2.ZERO
+var state : int = STAND
 
 
 func _ready():
@@ -41,6 +50,7 @@ func _physics_process(delta):
 	# Jump input
 	if Input.is_action_pressed("move_jump") and is_on_floor():
 		velocity += Vector3.UP * jump_force
+		_try_state(JUMP)
 		
 	velocity = move_and_slide(velocity, Vector3.UP)
 	
@@ -49,23 +59,33 @@ func _physics_process(delta):
 
 
 func perform_input_movement(delta : float, input_vector : Vector2):
+	# Get the basis of the player facing direction in 2 Dimensions
+	var basis_z := Vector2(transform.basis.z.x, transform.basis.z.z)
+	var basis_x := Vector2(transform.basis.x.x, transform.basis.x.z)
 	if input_vector != Vector2.ZERO and _movement_allowed():
 		# Speed up - Apply player WSAD movement as horizontal acceleration
-		var basis_z := Vector2(transform.basis.z.x, transform.basis.z.z)
-		var basis_x := Vector2(transform.basis.x.x, transform.basis.x.z)
 		var horizonal_dir := basis_z * input_vector.y + basis_x * input_vector.x
 		horizontal_velocity = horizontal_velocity.move_toward(
 			horizonal_dir * max_speed, acceleration * delta
 		)
+		_rotate_lower_body(horizonal_dir, delta)
+		_try_state(MOVE)
 	else:
 		# Slow down - apply horizontal friction
 		var friction = air_friction
 		if is_on_floor():
 			friction = ground_friction
 		horizontal_velocity = horizontal_velocity.move_toward(Vector2.ZERO, friction * delta)
+		_rotate_lower_body(basis_z, delta)
+		_try_state(STAND)
 		
 	velocity.x = horizontal_velocity.x
 	velocity.z = horizontal_velocity.y
+
+
+func _rotate_lower_body(to_facing: Vector2, _delta : float):
+	var dir = Vector3(to_facing.x, 0, to_facing.y)
+	lower_body.look_at(transform.origin - dir, Vector3.UP)
 
 
 func end_attack():
@@ -90,7 +110,6 @@ func _normalized_input_vector() -> Vector2:
 func _on_Vunerable_damage_received(damage):
 	stats.health -= damage
 	hurt_box.start_invincibility(hurt_timeout)
-	print("Health: " + str(stats.health))
 
 
 func _on_Vunerable_invincibility_started():
@@ -116,4 +135,44 @@ func _on_PlayerStats_no_health():
 	_move_camera_to_parent()
 	_create_death_effect()
 	queue_free()
-	
+
+
+func _try_state(new_state : int):
+	match state:
+		MOVE:
+			_try_from_move(new_state)
+		JUMP:
+			_try_from_jump(new_state)
+		STAND:
+			_try_from_stand(new_state)
+
+
+func _try_from_move(new_state : int):
+	match new_state:
+		JUMP:
+			lower_body_animation_player.play("jump")
+			state = JUMP
+		STAND:
+			lower_body_animation_player.play("stand")
+			state = STAND
+
+
+func _try_from_jump(new_state : int):
+	if is_on_floor():
+		match new_state:
+			MOVE:
+				lower_body_animation_player.play("run")
+				state = MOVE
+			STAND:
+				lower_body_animation_player.play("stand")
+				state = STAND
+
+
+func _try_from_stand(new_state : int):
+	match new_state:
+		MOVE:
+			lower_body_animation_player.play("run")
+			state = MOVE
+		JUMP:
+			lower_body_animation_player.play("jump")
+			state = JUMP

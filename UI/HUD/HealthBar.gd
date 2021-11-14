@@ -23,7 +23,6 @@ func set_health(value : float):
 	if health_ui_full != null:
 		health_ui_full.rect_size.x = health * pixel_per_health
 		var health_lerp = inverse_lerp(0, max_health, health)
-		print("health_lerp: " + str(health_lerp))
 		health_ui_full.color = health_gradient.interpolate(health_lerp)
 
 

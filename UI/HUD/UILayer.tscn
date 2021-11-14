@@ -21,7 +21,7 @@ health_gradient = SubResource( 1 )
 [node name="BackgroundRect" type="ColorRect" parent="HealthBar"]
 margin_right = 257.0
 margin_bottom = 18.0
-color = Color( 0, 0, 0, 0.188235 )
+color = Color( 0, 0, 0, 0.501961 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
