@@ -7,7 +7,7 @@ export (float) var max_look_angle : float = 75.0
 
 var mouse_delta : Vector2 = Vector2.ZERO
 
-onready var player : KinematicBody = get_parent()
+onready var player : Spatial = get_parent()
 onready var camera := $Camera
 
 

@@ -18,20 +18,25 @@ export (float) var gravity := 25.0
 export (bool) var air_control := true
 export (float) var spawn_timeout := 1.0
 export (float) var hurt_timeout := 0.3
+export (float) var foot_rotation_threshold := deg2rad(45)
 
-onready var animation_player := $WeaponHolder/MeleeWeaponHolder/AnimationPlayer
-onready var attack_ray_cast := $WeaponHolder/MeleeWeaponHolder/AttackRayCast
+onready var torso := $Body/Torso
+# The weapon stuff needs to be refactored out
+onready var weapon_animation_player := $Body/Torso/WeaponHolder/MeleeWeaponHolder/AnimationPlayer
+onready var attack_ray_cast := $Body/Torso/WeaponHolder/MeleeWeaponHolder/AttackRayCast
 onready var hurt_box := $Vunerable
 onready var invincibility_animation_player := $InvincibilityAnimationPlayer
 onready var lower_body := $Body/Waist
 onready var lower_body_animation_player := $Body/Waist/AnimationPlayer
-onready var camera_arm := $CameraOrbit
+onready var camera_arm := $Body/Torso/CameraOrbit
 onready var stats := PlayerStats
 onready var parent := get_parent()
 
 var velocity := Vector3.ZERO
 var horizontal_velocity := Vector2.ZERO
+var ground_orientation := Vector2.UP
 var state : int = STAND
+var back_peddle : bool = false
 
 
 func _ready():
@@ -55,20 +60,21 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity, Vector3.UP)
 	
 	if Input.is_action_just_pressed("move_attack"):
-		animation_player.play("attack")
+		weapon_animation_player.play("attack")
 
 
 func perform_input_movement(delta : float, input_vector : Vector2):
 	# Get the basis of the player facing direction in 2 Dimensions
-	var basis_z := Vector2(transform.basis.z.x, transform.basis.z.z)
-	var basis_x := Vector2(transform.basis.x.x, transform.basis.x.z)
+	var facing_basis : Basis = torso.transform.basis
+	var basis_z := Vector2(facing_basis.z.x, facing_basis.z.z)
+	var basis_x := Vector2(facing_basis.x.x, facing_basis.x.z)
 	if input_vector != Vector2.ZERO and _movement_allowed():
 		# Speed up - Apply player WSAD movement as horizontal acceleration
 		var horizonal_dir := basis_z * input_vector.y + basis_x * input_vector.x
 		horizontal_velocity = horizontal_velocity.move_toward(
 			horizonal_dir * max_speed, acceleration * delta
 		)
-		_rotate_lower_body(horizonal_dir, delta)
+		_rotate_lower_body_moving(horizonal_dir, input_vector.y < 0)
 		_try_state(MOVE)
 	else:
 		# Slow down - apply horizontal friction
@@ -76,20 +82,39 @@ func perform_input_movement(delta : float, input_vector : Vector2):
 		if is_on_floor():
 			friction = ground_friction
 		horizontal_velocity = horizontal_velocity.move_toward(Vector2.ZERO, friction * delta)
-		_rotate_lower_body(basis_z, delta)
+		_rotate_lower_body(basis_z)
 		_try_state(STAND)
 		
 	velocity.x = horizontal_velocity.x
 	velocity.z = horizontal_velocity.y
 
 
-func _rotate_lower_body(to_facing: Vector2, _delta : float):
+func _rotate_lower_body_moving(to_facing: Vector2, reverse: bool):
+	# When walking backwards, reverse the animation and the facing direction
+	back_peddle = reverse
+	if back_peddle:
+		to_facing = Vector2.ZERO - to_facing
+	_rotate_lower_body(to_facing)
+
+
+func _rotate_lower_body(to_facing: Vector2):
+	if state == STAND:
+		var rot_diff : float = abs(ground_orientation.angle_to(to_facing))
+		if rot_diff >= foot_rotation_threshold:
+			_reposition_feet(to_facing)
+	else:
+		_reposition_feet(to_facing)
+
+
+func _reposition_feet(to_facing: Vector2):
+	# Just move for now, but would like to have a little shuffle animation here
 	var dir = Vector3(to_facing.x, 0, to_facing.y)
 	lower_body.look_at(transform.origin - dir, Vector3.UP)
+	ground_orientation = to_facing
 
 
 func end_attack():
-	animation_player.play("idle")
+	weapon_animation_player.play("idle")
 
 
 func _movement_allowed() -> bool:
@@ -161,7 +186,7 @@ func _try_from_jump(new_state : int):
 	if is_on_floor():
 		match new_state:
 			MOVE:
-				lower_body_animation_player.play("run")
+				_play_body_running_animation()
 				state = MOVE
 			STAND:
 				lower_body_animation_player.play("stand")
@@ -171,8 +196,16 @@ func _try_from_jump(new_state : int):
 func _try_from_stand(new_state : int):
 	match new_state:
 		MOVE:
-			lower_body_animation_player.play("run")
+			_play_body_running_animation()
 			state = MOVE
 		JUMP:
 			lower_body_animation_player.play("jump")
 			state = JUMP
+
+
+func _play_body_running_animation():
+	if back_peddle:
+		lower_body_animation_player.play_backwards("run")
+	else:
+		lower_body_animation_player.play("run")
+
