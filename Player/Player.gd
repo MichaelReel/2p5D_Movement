@@ -2,6 +2,7 @@ extends KinematicBody
 
 
 const DeathEffect := preload("res://Effects/PlayerDeathEffect.tscn")
+const FOOT_ROTATION_THRESHOLD := deg2rad(45)
 
 enum {
 	MOVE,
@@ -18,7 +19,6 @@ export (float) var gravity := 25.0
 export (bool) var air_control := true
 export (float) var spawn_timeout := 1.0
 export (float) var hurt_timeout := 0.3
-export (float) var foot_rotation_threshold := deg2rad(45)
 
 onready var torso := $Body/Torso
 # The weapon stuff needs to be refactored out
@@ -99,11 +99,19 @@ func _rotate_lower_body_moving(to_facing: Vector2, reverse: bool):
 
 func _rotate_lower_body(to_facing: Vector2):
 	if state == STAND:
-		var rot_diff : float = abs(ground_orientation.angle_to(to_facing))
-		if rot_diff >= foot_rotation_threshold:
+		var rot_diff : float = ground_orientation.angle_to(to_facing)
+		if rot_diff >= FOOT_ROTATION_THRESHOLD:
 			_reposition_feet(to_facing)
+			lower_body_animation_player.play("shuffle_from_left")
+		elif rot_diff <= -FOOT_ROTATION_THRESHOLD:
+			_reposition_feet(to_facing)
+			lower_body_animation_player.play("shuffle_from_right")
 	else:
 		_reposition_feet(to_facing)
+
+
+func _shuffle_complete():
+	lower_body_animation_player.play("stand")
 
 
 func _reposition_feet(to_facing: Vector2):
