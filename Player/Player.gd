@@ -21,9 +21,7 @@ export (float) var spawn_timeout := 1.0
 export (float) var hurt_timeout := 0.3
 
 onready var torso := $Body/Torso
-# The weapon stuff needs to be refactored out
-onready var weapon_animation_player := $Body/Torso/WeaponHolder/MeleeWeaponHolder/AnimationPlayer
-onready var attack_ray_cast := $Body/Torso/WeaponHolder/MeleeWeaponHolder/AttackRayCast
+onready var weapon_weilder := $Body/Torso/WeaponWeilder
 onready var hurt_box := $Vunerable
 onready var invincibility_animation_player := $InvincibilityAnimationPlayer
 onready var lower_body := $Body/Waist
@@ -60,7 +58,9 @@ func _physics_process(delta):
 	velocity = move_and_slide(velocity, Vector3.UP)
 	
 	if Input.is_action_just_pressed("move_attack"):
-		weapon_animation_player.play("attack")
+		for weapon in weapon_weilder.get_children():
+			if weapon.has_method("perform_attack"):
+				weapon.perform_attack()
 
 
 func perform_input_movement(delta : float, input_vector : Vector2):
@@ -119,10 +119,6 @@ func _reposition_feet(to_facing: Vector2):
 	var dir = Vector3(to_facing.x, 0, to_facing.y)
 	lower_body.look_at(transform.origin - dir, Vector3.UP)
 	ground_orientation = to_facing
-
-
-func end_attack():
-	weapon_animation_player.play("idle")
 
 
 func _movement_allowed() -> bool:
