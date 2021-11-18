@@ -213,3 +213,6 @@ func _play_body_running_animation():
 	else:
 		lower_body_animation_player.play("run")
 
+
+func pickup_weapon(weapon : PackedScene):
+	weapon_weilder.add_child(weapon.instance())
