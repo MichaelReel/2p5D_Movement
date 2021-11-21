@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://UI/Inventory/InventoryIcon.tscn" type="PackedScene" id=1]
+[ext_resource path="res://UI/Inventory/InventorySlot.gd" type="Script" id=2]
+
+[node name="InventorySlot" type="Sprite"]
+position = Vector2( 51.0032, 51.5111 )
+script = ExtResource( 2 )
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 60, 60 )
+own_world = true
+transparent_bg = true
+render_target_v_flip = true
+
+[node name="InventoryIcon" parent="Viewport" instance=ExtResource( 1 )]

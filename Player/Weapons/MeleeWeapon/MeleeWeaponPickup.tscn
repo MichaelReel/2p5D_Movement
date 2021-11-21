@@ -1,12 +1,15 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Player/Weapons/WeaponPickup.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Weapons/MeleeWeapon/MeleeWeapon.tres" type="PrismMesh" id=2]
+[ext_resource path="res://Player/Weapons/MeleeWeapon/MeleeWeapon.tscn" type="PackedScene" id=3]
 
 [node name="MeleeWeaponPickup" instance=ExtResource( 1 )]
+weapon = ExtResource( 3 )
 
 [node name="MeshInstance" parent="." index="0"]
 transform = Transform( 0.739339, 0.0558856, 0.67101, 0.469846, 0.67101, -0.573576, -0.482309, 0.739339, 0.469846, 0, 1.5, 0 )
 mesh = ExtResource( 2 )
+material/0 = null
 
 [editable path="PlayerDetectionZone"]

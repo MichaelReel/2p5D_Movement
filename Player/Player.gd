@@ -28,6 +28,7 @@ onready var lower_body := $Body/Waist
 onready var lower_body_animation_player := $Body/Waist/AnimationPlayer
 onready var camera_arm := $Body/Torso/CameraOrbit
 onready var stats := PlayerStats
+onready var inventory := InventoryManager
 onready var parent := get_parent()
 
 var velocity := Vector3.ZERO
@@ -39,6 +40,7 @@ var back_peddle : bool = false
 
 func _ready():
 	var _err = stats.connect("no_health", self, "_on_PlayerStats_no_health")
+	_err = inventory.connect("selection_updated", self, "_on_Inventory_item_selected")
 	hurt_box.start_invincibility(spawn_timeout)
 
 
@@ -214,5 +216,11 @@ func _play_body_running_animation():
 		lower_body_animation_player.play("run")
 
 
-func pickup_weapon(weapon : PackedScene):
-	weapon_weilder.add_child(weapon.instance())
+func pickup_weapon(item_scene : PackedScene, icon_mesh : Mesh) -> bool:
+	var item_instance = item_scene.instance()
+	return inventory.pickup_item(item_instance, icon_mesh)
+
+
+func _on_Inventory_item_selected(item_instance, _index):
+	weapon_weilder.add_child(item_instance)
+

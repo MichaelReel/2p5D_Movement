@@ -21,7 +21,6 @@ func _create_picked_up_effect():
 
 
 func _on_PlayerDetectionZone_body_entered(body):
-	if body.has_method("pickup_weapon"):
-		body.pickup_weapon(weapon)
+	if body.has_method("pickup_weapon") and body.pickup_weapon(weapon, mesh_instance.mesh):
 		_create_picked_up_effect()
 		queue_free()

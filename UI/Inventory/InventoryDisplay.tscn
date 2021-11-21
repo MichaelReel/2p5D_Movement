@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://UI/Inventory/InventorySlot.tscn" type="PackedScene" id=1]
+[ext_resource path="res://UI/Inventory/InventoryDisplay.gd" type="Script" id=2]
+
+[node name="InventoryDisplay" type="Control"]
+anchor_left = 0.902
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 0.351929
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 90.0
+margin_bottom = 590.0
+color = Color( 0.12549, 0.12549, 0.12549, 0.12549 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InventorySlot_0" parent="." instance=ExtResource( 1 )]
+position = Vector2( 50, 50 )
+
+[node name="InventorySlot_1" parent="." instance=ExtResource( 1 )]
+position = Vector2( 50, 120 )
+
+[node name="InventorySlot_2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 50, 190 )
+
+[node name="InventorySlot_3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 50, 260 )
+
+[node name="InventorySlot_4" parent="." instance=ExtResource( 1 )]
+position = Vector2( 50, 330 )
+
+[node name="InventorySlot_5" parent="." instance=ExtResource( 1 )]
+position = Vector2( 50, 400 )
+
+[node name="InventorySlot_6" parent="." instance=ExtResource( 1 )]
+position = Vector2( 50, 470 )
+
+[node name="InventorySlot_7" parent="." instance=ExtResource( 1 )]
+position = Vector2( 50, 540 )
