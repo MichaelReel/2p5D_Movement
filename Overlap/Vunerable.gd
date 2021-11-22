@@ -50,10 +50,18 @@ func _on_Vunerable_invincibility_ended():
 	monitorable = true
 
 
-func _on_Vunerable_area_entered(area):
+func _on_Vunerable_area_entered(area : Area):
 	var damage : float = 1
 	if "damage" in area:
 		damage = area.damage
 	emit_signal("damage_received", damage)
 	create_hit_effect(area)
 
+
+func _on_Vunerable_body_entered(body : Node):
+	var damage : float = 1
+	if "damage" in body:
+		damage = body.damage
+	emit_signal("damage_received", damage)
+	create_hit_effect(body)
+	body.queue_free()
