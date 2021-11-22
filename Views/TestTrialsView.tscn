@@ -58,3 +58,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 11.204, -40 )
 
 [node name="MeleeWeaponPickup" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.0911, 0, -26.5092 )
+
+[node name="MeleeWeaponPickup2" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.2896, 0, -41.5202 )

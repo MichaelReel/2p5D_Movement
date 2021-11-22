@@ -222,5 +222,7 @@ func pickup_weapon(item_scene : PackedScene, icon_mesh : Mesh) -> bool:
 
 
 func _on_Inventory_item_selected(item_instance, _index):
+	for child in weapon_weilder.get_children():
+		weapon_weilder.remove_child(child)
 	weapon_weilder.add_child(item_instance)
 
