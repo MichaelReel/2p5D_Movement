@@ -64,6 +64,12 @@ func _physics_process(delta):
 			if weapon.has_method("perform_attack"):
 				weapon.perform_attack()
 
+	if Input.is_action_just_released("inventory_down"):
+		inventory.select_next_occupied_slot()
+		
+	if Input.is_action_just_released("inventory_up"):
+		inventory.select_next_occupied_slot(false)
+
 
 func perform_input_movement(delta : float, input_vector : Vector2):
 	# Get the basis of the player facing direction in 2 Dimensions

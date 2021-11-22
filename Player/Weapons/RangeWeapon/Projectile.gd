@@ -4,8 +4,6 @@ extends KinematicBody
 export (float) var gravity := 25.0
 export (float) var damage := 1.0
 
-onready var collision_timer = $CollisionTimer
-
 var velocity := Vector3.ZERO
 
 

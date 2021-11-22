@@ -38,6 +38,21 @@ func pickup_item(item : Spatial, mesh : Mesh) -> bool:
 	return false
 
 
+func select_next_occupied_slot(down : bool = true):
+	# find the next occupied slot in a given direction
+	print("next slot in " + ("down" if down else "up") + " direction")
+	var dir := 1 if down else -1
+	var test_slot := selected_slot + dir
+	while inventory_slots[test_slot] == null and test_slot != selected_slot:
+		test_slot += dir
+		if test_slot >= len(inventory_slots):
+			test_slot = 0
+		if test_slot <= -1:
+			test_slot = len(inventory_slots) - 1
+	if test_slot != selected_slot:
+		select_slot(test_slot)
+
+
 func select_slot(slot_index : int) -> bool:
 	"""
 	Set the item in the slot_index as selected, if there is an item in that slot
