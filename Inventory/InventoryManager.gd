@@ -50,7 +50,7 @@ func select_next_occupied_slot(down : bool = true):
 		if test_slot <= -1:
 			test_slot = len(inventory_slots) - 1
 	if test_slot != selected_slot:
-		select_slot(test_slot)
+		var _ok = select_slot(test_slot)
 
 
 func select_slot(slot_index : int) -> bool:

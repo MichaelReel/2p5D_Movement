@@ -9,3 +9,6 @@ func _process(_delta):
 
 func set_icon_mesh(mesh : Mesh):
 	icon.set_icon_mesh(mesh)
+
+func set_selected_state(selected : bool):
+	icon.set_fov_highlight(selected)
