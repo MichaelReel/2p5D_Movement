@@ -176,7 +176,6 @@ func _on_Stats_no_health():
 
 func _on_Vunerable_damage_received(damage):
 	stats.health -= damage
-	# Knockback?
 	hurt_box.start_invincibility(hurt_timeout)
 
 
