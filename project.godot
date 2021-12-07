@@ -75,6 +75,7 @@ inventory_up={
 3d_physics/layer_4="Enemy"
 3d_physics/layer_5="EnemyVunerable"
 3d_physics/layer_6="SoftColliders"
+3d_physics/layer_7="Commodity"
 
 [physics]
 
