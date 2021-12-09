@@ -3,7 +3,7 @@ extends Area
 var commodities : Array = []
 
 
-func can_see_commodity() -> bool:
+func can_recall_commodity() -> bool:
 	# Will worry about commodity types later
 	return not commodities.empty()
 

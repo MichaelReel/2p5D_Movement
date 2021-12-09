@@ -4,7 +4,8 @@ extends KinematicBody
 enum {
 	IDLE,
 	WANDER,
-	CHASE
+	CHASE,
+	EXTRACT,
 }
 
 const DeathEffect := preload("res://Effects/DeathEffect.tscn")
@@ -13,7 +14,11 @@ const STATE_COLORS := {
 	IDLE: Color(1.0, 1.0, 0.0, 1.0),
 	WANDER: Color(0.0, 1.0, 0.0, 1.0),
 	CHASE: Color(1.0, 0.0, 0.0, 1.0),
+	EXTRACT: Color(1.0, 0.5, 0.0, 1.0),
 }
+const COMMODITY_MAX := 100
+const COMMODITY_MIN := 0
+
 
 export (float) var max_speed := 5.0
 export (float) var friction := 200.0
@@ -23,6 +28,7 @@ export (float) var path_arrival_range := 1.0
 export (float) var chase_update_time := 1.0
 export (float) var soft_push_factor := 20.0
 export (float) var hurt_timeout := 0.4
+export (float) var commodity_desire_threshold := 60
 
 onready var parent := get_parent()  # For death effect + debug, could be scene root
 onready var nav : Navigation = get_parent()  # Specifically for navigation
@@ -33,10 +39,13 @@ onready var wander_controller = $WanderController
 onready var soft_collision := $SoftCollision
 onready var stats := $Stats
 onready var hurt_box := $Vunerable
+onready var extraction_timer := $ExtractTimer
+
 
 #onready var invunerability_animation_player := $InvunerabilityAnimationPlayer
 onready var state := _pick_random_state(NON_CHASE_STATES)
 onready var chase_reset_time := chase_update_time
+onready var commodity_level := rand_range(COMMODITY_MIN, COMMODITY_MAX)
 
 var velocity := Vector3.ZERO
 var path := []
@@ -51,6 +60,8 @@ func _physics_process(delta : float):
 			_in_wander_state(delta)
 		CHASE:
 			_in_chase_state(delta)
+		EXTRACT:
+			_in_extract_state(delta)
 	
 	_update_soft_collisions(delta)
 	_apply_velocity()
@@ -71,6 +82,8 @@ func _set_state(new_state : int):
 				_to_wander_state()
 			CHASE:
 				_to_chase_state()
+			EXTRACT:
+				_to_extract_state()
 		
 		face_material.albedo_color = STATE_COLORS[state]
 
@@ -92,8 +105,14 @@ func _to_chase_state():
 		_path_to_global_position(commodity.global_transform.origin)
 
 
+func _to_extract_state():
+	path.clear()
+	path_node = 0
+	extraction_timer.start()
+
+
 func _in_idle_state(delta : float):
-	_seek_player()
+	_seek_commodities()
 	if wander_controller.get_time_left() == 0:
 		_next_non_in_chase_state()
 	velocity = velocity.move_toward(Vector3.ZERO, friction * delta)
@@ -101,7 +120,7 @@ func _in_idle_state(delta : float):
 
 
 func _in_wander_state(delta : float):
-	_seek_player()
+	_seek_commodities()
 	if path_node >= path.size():
 		_next_non_in_chase_state()
 	_update_velocity_for_pathed_position(delta)
@@ -110,7 +129,7 @@ func _in_wander_state(delta : float):
 		_set_state(IDLE)
 
 
-func _in_chase_state(delta):
+func _in_chase_state(delta : float):
 	chase_reset_time -= delta
 	if chase_reset_time <= 0 or path_node >= path.size():
 		chase_reset_time = chase_update_time
@@ -120,6 +139,11 @@ func _in_chase_state(delta):
 		else:
 			_next_non_in_chase_state()
 		
+	_update_velocity_for_pathed_position(delta)
+
+
+func _in_extract_state(delta : float):
+	velocity = velocity.move_toward(Vector3.ZERO, friction * delta)
 	_update_velocity_for_pathed_position(delta)
 
 
@@ -154,8 +178,12 @@ func _update_velocity_for_pathed_position(delta : float):
 			velocity = velocity.move_toward(direction * max_speed, acceleration * delta)
 
 
-func _seek_player():
-	if commodity_detection_zone.can_see_commodity():
+func _commodity_desired() -> bool:
+	return commodity_level < commodity_desire_threshold
+
+
+func _seek_commodities():
+	if _commodity_desired() and commodity_detection_zone.can_recall_commodity():
 		_set_state(CHASE)
 
 
@@ -193,3 +221,20 @@ func _on_Vunerable_invincibility_ended():
 
 #func _on_InvunerabilityAnimationPlayer_animation_finished(_anim_name):
 #	face_material.albedo_color = STATE_COLORS[state]
+
+
+func _on_ConsumeTimer_timeout():
+	commodity_level -= 1
+
+
+func _on_CommodityExtractionZone_commodity_available():
+	if state == CHASE:
+		_set_state(EXTRACT)
+
+
+func _on_ExtractTimer_timeout():
+	commodity_level += 1
+	if commodity_level >= COMMODITY_MAX:
+		commodity_level = COMMODITY_MAX
+		extraction_timer.stop()
+		_next_non_in_chase_state()
