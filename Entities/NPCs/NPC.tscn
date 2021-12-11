@@ -1,14 +1,13 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Entities/NPCs/NPC.gd" type="Script" id=1]
 [ext_resource path="res://Entities/WanderController.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Overlap/PlayerDetectionZone.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Entities/NPCs/CommodityDetectionZone.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Entities/NPCs/CommodityController.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Overlap/SoftCollision.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Classes/Stats.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Overlap/Vunerable.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Entities/state_material.tres" type="Material" id=8]
-[ext_resource path="res://Entities/NPCs/CommodityExtractionZone.tscn" type="PackedScene" id=9]
 
 [sub_resource type="CapsuleMesh" id=3]
 radius = 0.75
@@ -16,17 +15,17 @@ mid_height = 0.5
 radial_segments = 4
 rings = 1
 
-[sub_resource type="CylinderShape" id=4]
-radius = 20.0
-height = 10.0
-
-[sub_resource type="BoxShape" id=7]
-
 [sub_resource type="CylinderShape" id=5]
 
 [sub_resource type="CapsuleShape" id=6]
 radius = 0.75
 height = 0.5
+
+[sub_resource type="CylinderShape" id=7]
+radius = 20.0
+height = 10.0
+
+[sub_resource type="BoxShape" id=8]
 
 [node name="NPC" type="KinematicBody"]
 script = ExtResource( 1 )
@@ -37,18 +36,8 @@ mesh = SubResource( 3 )
 material/0 = ExtResource( 8 )
 
 [node name="WanderController" parent="." instance=ExtResource( 2 )]
-
-[node name="CommodityDetectionZone" parent="." instance=ExtResource( 4 )]
-
-[node name="CollisionShape" parent="CommodityDetectionZone" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-shape = SubResource( 4 )
-
-[node name="CommodityExtractionZone" parent="." instance=ExtResource( 9 )]
-
-[node name="CollisionShape" parent="CommodityExtractionZone" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1 )
-shape = SubResource( 7 )
+wander_min = 16.0
+wander_max = 48.0
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 3 )]
 
@@ -67,21 +56,25 @@ collision_layer = 20
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0 )
 shape = SubResource( 6 )
 
-[node name="ConsumeTimer" type="Timer" parent="."]
-autostart = true
+[node name="CommodityController" parent="." instance=ExtResource( 4 )]
 
-[node name="ExtractTimer" type="Timer" parent="."]
-wait_time = 0.1
+[node name="CollisionShape" parent="CommodityController/CommodityDetectionZone" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+shape = SubResource( 7 )
 
-[connection signal="commodity_available" from="CommodityExtractionZone" to="." method="_on_CommodityExtractionZone_commodity_available"]
+[node name="CollisionShape" parent="CommodityController/CommodityExtractionZone" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1 )
+shape = SubResource( 8 )
+
 [connection signal="no_health" from="Stats" to="." method="_on_Stats_no_health"]
 [connection signal="damage_received" from="Vunerable" to="." method="_on_Vunerable_damage_received"]
 [connection signal="invincibility_ended" from="Vunerable" to="." method="_on_Vunerable_invincibility_ended"]
 [connection signal="invincibility_started" from="Vunerable" to="." method="_on_Vunerable_invincibility_started"]
-[connection signal="timeout" from="ConsumeTimer" to="." method="_on_ConsumeTimer_timeout"]
-[connection signal="timeout" from="ExtractTimer" to="." method="_on_ExtractTimer_timeout"]
+[connection signal="extraction_complete" from="CommodityController" to="." method="_on_CommodityController_extraction_complete"]
+[connection signal="extraction_started" from="CommodityController" to="." method="_on_CommodityController_extraction_started"]
 
-[editable path="CommodityDetectionZone"]
-[editable path="CommodityExtractionZone"]
 [editable path="SoftCollision"]
 [editable path="Vunerable"]
+[editable path="CommodityController"]
+[editable path="CommodityController/CommodityDetectionZone"]
+[editable path="CommodityController/CommodityExtractionZone"]

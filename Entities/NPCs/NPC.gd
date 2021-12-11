@@ -16,8 +16,6 @@ const STATE_COLORS := {
 	CHASE: Color(1.0, 0.0, 0.0, 1.0),
 	EXTRACT: Color(1.0, 0.5, 0.0, 1.0),
 }
-const COMMODITY_MAX := 100
-const COMMODITY_MIN := 0
 
 
 export (float) var max_speed := 5.0
@@ -34,18 +32,16 @@ onready var parent := get_parent()  # For death effect + debug, could be scene r
 onready var nav : Navigation = get_parent()  # Specifically for navigation
 
 onready var face_material : SpatialMaterial = $MeshInstance.get_surface_material(0)
-onready var commodity_detection_zone := $CommodityDetectionZone
 onready var wander_controller = $WanderController
 onready var soft_collision := $SoftCollision
 onready var stats := $Stats
 onready var hurt_box := $Vunerable
-onready var extraction_timer := $ExtractTimer
+onready var commodity_controller := $CommodityController
 
 
 #onready var invunerability_animation_player := $InvunerabilityAnimationPlayer
 onready var state := _pick_random_state(NON_CHASE_STATES)
 onready var chase_reset_time := chase_update_time
-onready var commodity_level := rand_range(COMMODITY_MIN, COMMODITY_MAX)
 
 var velocity := Vector3.ZERO
 var path := []
@@ -100,15 +96,14 @@ func _to_wander_state():
 
 
 func _to_chase_state():
-	var commodity : Spatial = commodity_detection_zone.commodities[0]
-	if commodity != null:
-		_path_to_global_position(commodity.global_transform.origin)
+	var commodity_position = commodity_controller.priority_commodity_position()
+	_path_to_global_position(commodity_position)
 
 
 func _to_extract_state():
 	path.clear()
 	path_node = 0
-	extraction_timer.start()
+	commodity_controller.begin_extraction()
 
 
 func _in_idle_state(delta : float):
@@ -133,9 +128,8 @@ func _in_chase_state(delta : float):
 	chase_reset_time -= delta
 	if chase_reset_time <= 0 or path_node >= path.size():
 		chase_reset_time = chase_update_time
-		var commodity : Spatial = commodity_detection_zone.commodities[0]
-		if commodity != null:
-			_path_to_global_position(commodity.global_transform.origin)
+		if commodity_controller.desired_commodity_in_range():
+			_path_to_global_position(commodity_controller.priority_commodity_position())
 		else:
 			_next_non_in_chase_state()
 		
@@ -178,12 +172,8 @@ func _update_velocity_for_pathed_position(delta : float):
 			velocity = velocity.move_toward(direction * max_speed, acceleration * delta)
 
 
-func _commodity_desired() -> bool:
-	return commodity_level < commodity_desire_threshold
-
-
 func _seek_commodities():
-	if _commodity_desired() and commodity_detection_zone.can_recall_commodity():
+	if commodity_controller.desired_commodity_in_range():
 		_set_state(CHASE)
 
 
@@ -223,18 +213,9 @@ func _on_Vunerable_invincibility_ended():
 #	face_material.albedo_color = STATE_COLORS[state]
 
 
-func _on_ConsumeTimer_timeout():
-	commodity_level -= 1
+func _on_CommodityController_extraction_started():
+	_set_state(EXTRACT)
 
 
-func _on_CommodityExtractionZone_commodity_available():
-	if state == CHASE:
-		_set_state(EXTRACT)
-
-
-func _on_ExtractTimer_timeout():
-	commodity_level += 1
-	if commodity_level >= COMMODITY_MAX:
-		commodity_level = COMMODITY_MAX
-		extraction_timer.stop()
-		_next_non_in_chase_state()
+func _on_CommodityController_extraction_complete():
+	_next_non_in_chase_state()
