@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Entities/state_material.tres" type="Material" id=1]
-[ext_resource path="res://Entities/NPCs/Commodity.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Entities/NPCs/Commodities/WaterSource.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Entities/NPCs/NPC.tscn" type="PackedScene" id=3]
 
 [sub_resource type="NavigationMesh" id=2]
@@ -135,18 +135,15 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, -50 )
 [node name="NPC5" parent="Navigation" instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -30 )
 
-[node name="Commodity" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 22 )
-
-[node name="Commodity2" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -60 )
-
-[node name="Commodity3" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -40, 0, -20 )
-
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 0.654305, -0.504436, 0.563408, 0, 0.745022, 0.66704, -0.75623, -0.436448, 0.487472, 25.8236, 33.8805, 22.1644 )
 far = 150.0
+
+[node name="WaterSource" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20 )
+
+[node name="WaterSource2" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -40.1153, 0, -58.2449 )

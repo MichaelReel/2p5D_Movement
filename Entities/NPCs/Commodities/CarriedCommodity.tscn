@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Entities/NPCs/Commodities/CarriedCommodity.gd" type="Script" id=1]
+
+[node name="CarriedCommodity" type="Sprite3D"]
+billboard = 2
+script = ExtResource( 1 )

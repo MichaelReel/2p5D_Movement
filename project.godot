@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Object",
+"class": "Commodity",
+"language": "GDScript",
+"path": "res://Classes/Commodity.gd"
+} ]
+_global_script_class_icons={
+"Commodity": ""
+}
+
 [application]
 
 config/name="2p5D_Movement"
