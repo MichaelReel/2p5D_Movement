@@ -12,6 +12,7 @@ onready var commodity_detection_zone := $CommodityDetectionZone
 
 
 var commodity_map := {}
+var desire_queue := []
 var extracting
 
 
@@ -24,15 +25,26 @@ func _ready():
 
 
 func desired_commodity_in_range() -> bool:
-	var desired_and_in_range := false
+	var any_desired_in_range := false
 	for type in commodity_map.keys():
-		if commodity_map[type].desired() and commodity_detection_zone.can_recall_commodity():
-			desired_and_in_range = true
-	return desired_and_in_range
+		var desired : bool = commodity_map[type].desired()
+		var in_range : bool = commodity_detection_zone.can_recall_commodity(type)
+		if desired and in_range:
+			any_desired_in_range = true
+			break
+	return any_desired_in_range
 
 
 func priority_commodity_position() -> Vector3:
-	var commodity : Spatial = commodity_detection_zone.commodities[0]
+	if desire_queue.empty():
+		# Something cleared the queue, sit still and await state to change
+		return global_transform.origin
+	
+	while not commodity_detection_zone.can_recall_commodity(desire_queue.front()):
+		# TODO: Need to guard against an infinite loop here
+		desire_queue.push_back(desire_queue.pop_front()) 
+	
+	var commodity : Spatial = commodity_detection_zone.commodities[desire_queue.front()][0]
 	return commodity.global_transform.origin
 
 
@@ -41,6 +53,7 @@ func begin_extraction() -> void:
 
 
 func _on_Commodity_commodity_desired(type : int) -> void:
+	desire_queue.push_back(type)
 	emit_signal("commodity_desired", type)
 
 
@@ -50,6 +63,7 @@ func _on_Commodity_commodity_exhausted(type : int) -> void:
 
 func _on_Commodity_commodity_replenished(_type : int) -> void:
 	extraction_timer.stop()
+	desire_queue.erase(extracting)
 	extracting = null
 	emit_signal("extraction_complete")
 

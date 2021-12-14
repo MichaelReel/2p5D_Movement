@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Entities/NPCs/NPC.gd" type="Script" id=1]
 [ext_resource path="res://Entities/WanderController.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Overlap/Vunerable.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Entities/state_material.tres" type="Material" id=8]
 [ext_resource path="res://Entities/NPCs/Commodities/CarriedWater.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Entities/NPCs/Commodities/CarriedFood.tscn" type="PackedScene" id=10]
 
 [sub_resource type="CapsuleMesh" id=3]
 radius = 0.75
@@ -68,6 +69,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1 )
 shape = SubResource( 8 )
 
 [node name="CarriedWater" parent="CommodityController/CarriedCommodities" index="0" instance=ExtResource( 9 )]
+
+[node name="CarriedFood" parent="CommodityController/CarriedCommodities" index="1" instance=ExtResource( 10 )]
 
 [connection signal="no_health" from="Stats" to="." method="_on_Stats_no_health"]
 [connection signal="damage_received" from="Vunerable" to="." method="_on_Vunerable_damage_received"]

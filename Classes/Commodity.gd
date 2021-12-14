@@ -5,4 +5,6 @@ enum TYPES {
 	WATER,
 	FOOD,
 	SLEEP,
+	
+	LENGTH,
 }
