@@ -10,6 +10,7 @@ height = 0.5
 
 [node name="CarriedWater" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 4, 0 )
+consume_rate = 5
 
 [node name="MeshInstance" parent="." index="0"]
 mesh = SubResource( 1 )

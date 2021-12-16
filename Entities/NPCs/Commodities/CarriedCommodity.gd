@@ -9,13 +9,13 @@ const COMMODITY_MAX := 100
 const COMMODITY_MIN := 0
 
 export var type : int = Commodity.TYPES.WATER
-export (int) var desire_threshold := 60
+export (int) var desire_threshold := 30
 export (int) var exhaust_threshold := 5
 export (int) var consume_rate := 2
 export (int) var extract_rate := 10
 export (int) var level := COMMODITY_MAX
-export (Color) var min_color := Color.black
-export (Color) var max_color := Color.white
+export (Color) var min_color := Color.red
+export (Color) var max_color := Color.green
 
 
 onready var state_material : SpatialMaterial = $MeshInstance.get_surface_material(0)
