@@ -26,7 +26,7 @@ export (float) var path_arrival_range := 1.0
 export (float) var chase_update_time := 1.0
 export (float) var soft_push_factor := 20.0
 export (float) var hurt_timeout := 0.4
-export (float) var commodity_desire_threshold := 60
+export (float) var commodity_desire_threshold := 60.0
 
 onready var parent := get_parent()  # For death effect + debug, could be scene root
 onready var nav : Navigation = get_parent()  # Specifically for navigation

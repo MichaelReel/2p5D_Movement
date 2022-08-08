@@ -186,10 +186,6 @@ damage = 2.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.65 )
 shape = SubResource( 10 )
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
-autostart = true
-
 [node name="WanderController" parent="." instance=ExtResource( 6 )]
 wander_min = 6.0
 wander_max = 10.0
