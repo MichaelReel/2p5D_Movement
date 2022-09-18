@@ -216,6 +216,8 @@ shape = SubResource( 5 )
 anims/start = SubResource( 6 )
 anims/stop = SubResource( 7 )
 
+[node name="NavigationAgent" type="NavigationAgent" parent="."]
+
 [connection signal="no_health" from="Stats" to="." method="_on_Stats_no_health"]
 [connection signal="damage_received" from="Vunerable" to="." method="_on_Vunerable_damage_received"]
 [connection signal="invincibility_ended" from="Vunerable" to="." method="_on_Vunerable_invincibility_ended"]

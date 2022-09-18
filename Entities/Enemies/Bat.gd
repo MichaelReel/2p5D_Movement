@@ -19,13 +19,12 @@ export (float) var max_speed := 5.0
 export (float) var friction := 200.0
 export (float) var acceleration := 10.0
 export (float) var arrival_range := 1.0
-export (float) var path_arrival_range := 1.0
 export (float) var chase_update_time := 1.0
 export (float) var soft_push_factor := 20.0
 export (float) var hurt_timeout := 0.4
 
 onready var parent := get_parent()  # For death effect + debug, could be scene root
-onready var nav : Navigation = get_parent()  # Specifically for navigation
+onready var nav : NavigationAgent = $NavigationAgent
 onready var wing_material : SpatialMaterial = $AnimatedComponents/Body/LeftWingPivot/WingMesh.get_surface_material(0)
 onready var player_detection_zone := $PlayerDetectionZone
 onready var wander_controller = $WanderController
@@ -37,8 +36,6 @@ onready var state := _pick_random_state(NON_CHASE_STATES)
 onready var chase_reset_time := chase_update_time
 
 var velocity := Vector3.ZERO
-var path := []
-var path_node := 0
 
 
 func _physics_process(delta : float):
@@ -74,8 +71,6 @@ func _set_state(new_state : int):
 
 
 func _to_idle_state():
-	path.clear()
-	path_node = 0
 	wander_controller.start_wander_timer()
 
 
@@ -100,7 +95,7 @@ func _in_idle_state(delta : float):
 
 func _in_wander_state(delta : float):
 	_seek_player()
-	if path_node >= path.size():
+	if nav.is_navigation_finished():
 		_next_non_in_chase_state()
 	_update_velocity_for_pathed_position(delta)
 	
@@ -110,7 +105,7 @@ func _in_wander_state(delta : float):
 
 func _in_chase_state(delta):
 	chase_reset_time -= delta
-	if chase_reset_time <= 0 or path_node >= path.size():
+	if chase_reset_time <= 0 or nav.is_navigation_finished():
 		chase_reset_time = chase_update_time
 		var player : Spatial = player_detection_zone.player
 		if player != null:
@@ -138,18 +133,16 @@ func _apply_velocity():
 
 
 func _path_to_global_position(target_pos : Vector3):
-	path = nav.get_simple_path(global_transform.origin, target_pos)
-	path_node = 0
+	nav.set_target_location(target_pos)
 
 
 func _update_velocity_for_pathed_position(delta : float):
-	if path_node < path.size():
-		var distance : float = global_transform.origin.distance_to(path[path_node])
-		var direction : Vector3 = global_transform.origin.direction_to(path[path_node])
-		if distance <= path_arrival_range:
-			path_node += 1
-		else:
-			velocity = velocity.move_toward(direction * max_speed, acceleration * delta)
+	if nav.is_navigation_finished():
+		return
+
+	var path_next : Vector3 = nav.get_next_location()
+	var direction : Vector3 = global_transform.origin.direction_to(path_next)
+	velocity = velocity.move_toward(direction * max_speed, acceleration * delta)
 
 
 func _seek_player():
