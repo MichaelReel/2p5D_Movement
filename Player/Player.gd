@@ -21,7 +21,7 @@ export (float) var spawn_timeout := 1.0
 export (float) var hurt_timeout := 0.3
 
 onready var torso := $Body/Torso
-onready var weapon_weilder := $Body/Torso/WeaponWeilder
+onready var weapon_weilder := $Body/Torso/WeaponWielder
 onready var hurt_box := $Vunerable
 onready var invincibility_animation_player := $InvincibilityAnimationPlayer
 onready var lower_body := $Body/Waist

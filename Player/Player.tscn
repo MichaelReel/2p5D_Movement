@@ -450,7 +450,7 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1, 1, 
 current = true
 script = ExtResource( 6 )
 
-[node name="WeaponWeilder" type="Spatial" parent="Body/Torso"]
+[node name="WeaponWielder" type="Spatial" parent="Body/Torso"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, 0.035 )
 
 [node name="Waist" type="Spatial" parent="Body"]
