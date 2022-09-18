@@ -22,14 +22,13 @@ export (float) var max_speed := 5.0
 export (float) var friction := 200.0
 export (float) var acceleration := 10.0
 export (float) var arrival_range := 1.0
-export (float) var path_arrival_range := 1.0
 export (float) var chase_update_time := 1.0
 export (float) var soft_push_factor := 20.0
 export (float) var hurt_timeout := 0.4
 export (float) var commodity_desire_threshold := 60.0
 
 onready var parent := get_parent()  # For death effect + debug, could be scene root
-onready var nav : Navigation = get_parent()  # Specifically for navigation
+onready var nav : NavigationAgent = $NavigationAgent
 
 onready var face_material : SpatialMaterial = $MeshInstance.get_surface_material(0)
 onready var wander_controller = $WanderController
@@ -43,9 +42,7 @@ onready var commodity_controller := $CommodityController
 onready var state := _pick_random_state(NON_CHASE_STATES)
 onready var chase_reset_time := chase_update_time
 
-var velocity := Vector3.ZERO
-var path := []
-var path_node := 0
+var _velocity := Vector3.ZERO
 
 
 func _physics_process(delta : float):
@@ -85,8 +82,6 @@ func _set_state(new_state : int):
 
 
 func _to_idle_state():
-	path.clear()
-	path_node = 0
 	wander_controller.start_wander_timer()
 
 
@@ -101,8 +96,6 @@ func _to_chase_state():
 
 
 func _to_extract_state():
-	path.clear()
-	path_node = 0
 	commodity_controller.begin_extraction()
 
 
@@ -110,13 +103,13 @@ func _in_idle_state(delta : float):
 	_seek_commodities()
 	if wander_controller.get_time_left() == 0:
 		_next_non_in_chase_state()
-	velocity = velocity.move_toward(Vector3.ZERO, friction * delta)
+	_velocity = _velocity.move_toward(Vector3.ZERO, friction * delta)
 	_update_velocity_for_pathed_position(delta)
 
 
 func _in_wander_state(delta : float):
 	_seek_commodities()
-	if path_node >= path.size():
+	if nav.is_navigation_finished():
 		_next_non_in_chase_state()
 	_update_velocity_for_pathed_position(delta)
 	
@@ -126,7 +119,7 @@ func _in_wander_state(delta : float):
 
 func _in_chase_state(delta : float):
 	chase_reset_time -= delta
-	if chase_reset_time <= 0 or path_node >= path.size():
+	if chase_reset_time <= 0 or nav.is_navigation_finished():
 		chase_reset_time = chase_update_time
 		if commodity_controller.desired_commodity_in_range():
 			_path_to_global_position(commodity_controller.priority_commodity_position())
@@ -137,7 +130,7 @@ func _in_chase_state(delta : float):
 
 
 func _in_extract_state(delta : float):
-	velocity = velocity.move_toward(Vector3.ZERO, friction * delta)
+	_velocity = _velocity.move_toward(Vector3.ZERO, friction * delta)
 	_update_velocity_for_pathed_position(delta)
 
 
@@ -147,29 +140,27 @@ func _next_non_in_chase_state():
 
 func _update_soft_collisions(delta : float):
 	if soft_collision.is_colliding():
-		velocity += soft_collision.get_push_vector() * delta * soft_push_factor
+		_velocity += soft_collision.get_push_vector() * delta * soft_push_factor
 
 
 func _apply_velocity():
-	var facing := global_transform.origin + Vector3(velocity.x, 0, velocity.z)
+	var facing := global_transform.origin + Vector3(_velocity.x, 0, _velocity.z)
 	if facing != global_transform.origin:
 		look_at(facing, Vector3.UP)
-	velocity = move_and_slide(velocity, Vector3.UP)
+	_velocity = move_and_slide(_velocity, Vector3.UP)
 
 
 func _path_to_global_position(target_pos : Vector3):
-	path = nav.get_simple_path(global_transform.origin, target_pos)
-	path_node = 0
+	nav.set_target_location(target_pos)
 
 
 func _update_velocity_for_pathed_position(delta : float):
-	if path_node < path.size():
-		var distance : float = global_transform.origin.distance_to(path[path_node])
-		var direction : Vector3 = global_transform.origin.direction_to(path[path_node])
-		if distance <= path_arrival_range:
-			path_node += 1
-		else:
-			velocity = velocity.move_toward(direction * max_speed, acceleration * delta)
+	if nav.is_navigation_finished():
+		return
+
+	var path_node : Vector3 = nav.get_next_location()
+	var direction : Vector3 = global_transform.origin.direction_to(path_node)
+	_velocity = _velocity.move_toward(direction * max_speed, acceleration * delta)
 
 
 func _seek_commodities():

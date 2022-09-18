@@ -24,8 +24,8 @@ radius = 0.75
 height = 0.5
 
 [sub_resource type="CylinderShape" id=7]
-radius = 20.0
 height = 10.0
+radius = 20.0
 
 [sub_resource type="BoxShape" id=8]
 
@@ -71,6 +71,8 @@ shape = SubResource( 8 )
 [node name="CarriedWater" parent="CommodityController/CarriedCommodities" index="0" instance=ExtResource( 9 )]
 
 [node name="CarriedFood" parent="CommodityController/CarriedCommodities" index="1" instance=ExtResource( 10 )]
+
+[node name="NavigationAgent" type="NavigationAgent" parent="."]
 
 [connection signal="no_health" from="Stats" to="." method="_on_Stats_no_health"]
 [connection signal="damage_received" from="Vunerable" to="." method="_on_Vunerable_damage_received"]
