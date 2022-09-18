@@ -1,4 +1,4 @@
-extends Spatial
+extends Navigation
 
 
 export (Rect2) var floor_space := Rect2(Vector2(-20, -20), Vector2(40, 40))
@@ -8,8 +8,8 @@ export (float) var noise_threshold := 0.20
 export (float) var threshold_per_level := 0.05
 
 
-onready var navigation := $Navigation
-onready var grid_map := $GridMap
+onready var nav_mesh := $NavigationMeshInstance
+onready var grid_map := $NavigationMeshInstance/GridMap
 onready var mesh_lib : MeshLibrary = grid_map.mesh_library
 onready var cube := mesh_lib.find_item_by_name("cube")
 onready var cube_water := mesh_lib.find_item_by_name("cube_water")
@@ -19,7 +19,6 @@ onready var cube_grass := mesh_lib.find_item_by_name("cube_grass")
 onready var space := GridMap.INVALID_CELL_ITEM
 onready var noise := OpenSimplexNoise.new()
 
-var nav_mesh_scratch := SurfaceTool.new()
 
 func _ready():
 	_create_flat_base()
@@ -28,6 +27,7 @@ func _ready():
 	_setup_noise()
 	_create_noise_layers()
 	_create_retaining_wall()
+	nav_mesh.bake_navigation_mesh(false)
 
 
 func _setup_noise():

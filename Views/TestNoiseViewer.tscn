@@ -1,5 +1,6 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
+[ext_resource path="res://Entities/Enemies/Bat.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Entities/TestBody.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Terrain/Terrain.tscn" type="PackedScene" id=4]
@@ -7,6 +8,9 @@
 [node name="TestNoiseViewer" type="Spatial"]
 
 [node name="Terrain" parent="." instance=ExtResource( 4 )]
+
+[node name="Bat" parent="Terrain" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.29695, 15.9281 )
 
 [node name="TestBody" parent="." instance=ExtResource( 3 )]
 
