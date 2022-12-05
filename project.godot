@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="2p5D_Movement"
-run/main_scene="res://Views/TestAutomatonView.tscn"
+run/main_scene="res://Views/TestTrialsViewShaded.tscn"
 config/icon="res://icon.png"
 
 [autoload]
