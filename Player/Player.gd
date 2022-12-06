@@ -1,5 +1,8 @@
 extends KinematicBody
 
+signal no_health
+signal health_fraction_of_max(fraction_health)
+
 
 const DeathEffect := preload("res://Effects/PlayerDeathEffect.tscn")
 const FOOT_ROTATION_THRESHOLD := deg2rad(45)
@@ -148,6 +151,8 @@ func _on_Vunerable_damage_received(damage):
 	stats.health -= damage
 	hurt_box.start_invincibility(hurt_timeout)
 
+	emit_signal("health_fraction_of_max", stats.get_health_as_fraction())
+
 
 func _on_Vunerable_invincibility_started():
 	invincibility_animation_player.play("start")
@@ -171,6 +176,7 @@ func _create_death_effect():
 func _on_PlayerStats_no_health():
 	_move_camera_to_parent()
 	_create_death_effect()
+	emit_signal("no_health")
 	queue_free()
 
 

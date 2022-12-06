@@ -24,3 +24,9 @@ func set_health(value : int):
 	emit_signal("health_changed", health)
 	if health <= 0:
 		emit_signal("no_health")
+
+
+func get_health_as_fraction() -> float:
+	if health <= 0:
+		return 0.0
+	return float(max_health) / float(health)
