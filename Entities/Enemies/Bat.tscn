@@ -202,6 +202,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.65)
 shape = SubResource("10")
 
 [node name="Vunerable" parent="AnimatedComponents/Body" instance=ExtResource("1")]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 0.843542, 0.537064, 0, -0.537064, 0.843542, 0, -0.242885, 0.549499)
 collision_layer = 16
 

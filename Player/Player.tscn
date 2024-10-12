@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" path="res://Overlap/SoftCollision.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://54q6c8oc6k81" path="res://Overlap/Vunerable.tscn" id="5"]
 [ext_resource type="Script" path="res://Player/PlayerCamera.gd" id="6"]
-[ext_resource type="PackedScene" path="res://UI/HUD/UILayer.tscn" id="7"]
+[ext_resource type="PackedScene" uid="uid://b718rue2nvx74" path="res://UI/HUD/UILayer.tscn" id="7"]
 [ext_resource type="Material" uid="uid://cmcq7mmatmq7w" path="res://Player/PlayerColor.tres" id="8"]
 
 [sub_resource type="CapsuleMesh" id="1"]

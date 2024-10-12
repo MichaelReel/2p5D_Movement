@@ -1,25 +1,18 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://x30b3yorfho7"]
 
-[ext_resource path="res://UI/Inventory/InventoryIcon.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://UI/Inventory/InventoryIcon.gd" id="1"]
 
-[sub_resource type="QuadMesh" id=1]
+[sub_resource type="QuadMesh" id="1"]
 
 [node name="InventoryIcon" type="Node3D"]
-script = ExtResource( 1 )
+script = ExtResource("1")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D( 1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0 )
-mesh = SubResource( 1 )
-material/0 = null
-__meta__ = {
-"_editor_description_": "The back to front mesh here is deliberate to force the inventory scenes to load at the start so we don't get a preformance dorp when picking up the first item."
-}
+transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0)
+mesh = SubResource("1")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D( 0.809944, -0.264723, 0.523367, -0.0716674, 0.840987, 0.536288, -0.582112, -0.471871, 0.66218, 0.804934, 0.878675, 1.60878 )
+transform = Transform3D(0.809944, -0.264723, 0.523367, -0.0716674, 0.840987, 0.536288, -0.582112, -0.471871, 0.66218, 0.804934, 0.878675, 1.60878)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D( 0.707107, 0.707107, 0, -0.5, 0.5, 0.707107, 0.5, -0.5, 0.707107, 0, 0, 0 )
-__meta__ = {
-"_editor_description_": ""
-}
+transform = Transform3D(0.707107, 0.707107, 0, -0.5, 0.5, 0.707107, 0.5, -0.5, 0.707107, 0, 0, 0)
