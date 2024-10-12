@@ -1,4 +1,4 @@
-extends Area
+extends Area3D
 
 
-export (int) var type := Commodity.TYPES.WATER
+@export var type := Commodity.TYPES.WATER

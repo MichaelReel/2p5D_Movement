@@ -17,7 +17,7 @@ func _ready():
 		slot_icon_meshes.append(null)
 
 
-func pickup_item(item : Spatial, mesh : Mesh) -> bool:
+func pickup_item(item : Node3D, mesh : Mesh) -> bool:
 	"""
 	Attempt to add an item to the inventory.
 	

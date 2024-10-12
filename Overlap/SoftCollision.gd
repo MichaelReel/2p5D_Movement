@@ -1,4 +1,4 @@
-extends Area
+extends Area3D
 
 
 func is_colliding():
@@ -9,7 +9,7 @@ func get_push_vector() -> Vector3:
 	var areas := get_overlapping_areas()
 	var push_vector := Vector3.ZERO
 	if is_colliding():
-		var area : Area = areas[0]
+		var area : Area3D = areas[0]
 		push_vector = area.global_transform.origin.direction_to(
 			global_transform.origin
 		).normalized()

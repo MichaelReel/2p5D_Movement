@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 # Holds information about a commodity
 
 signal commodity_desired(type)
@@ -8,17 +8,17 @@ signal commodity_replenished(type)
 const COMMODITY_MAX := 100
 const COMMODITY_MIN := 0
 
-export var type : int = Commodity.TYPES.WATER
-export (int) var desire_threshold := 30
-export (int) var exhaust_threshold := 5
-export (int) var consume_rate := 2
-export (int) var extract_rate := 10
-export (int) var level := COMMODITY_MAX
-export (Color) var min_color := Color.red
-export (Color) var max_color := Color.green
+@export var type : int = Commodity.TYPES.WATER
+@export var desire_threshold := 30
+@export var exhaust_threshold := 5
+@export var consume_rate := 2
+@export var extract_rate := 10
+@export var level := COMMODITY_MAX
+@export var min_color := Color.RED
+@export var max_color := Color.GREEN
 
 
-onready var state_material : SpatialMaterial = $MeshInstance.get_surface_material(0)
+@onready var state_material : StandardMaterial3D = $MeshInstance3D.get_surface_override_material(0)
 
 
 func consume() -> void:

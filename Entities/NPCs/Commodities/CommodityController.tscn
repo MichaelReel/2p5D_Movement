@@ -4,7 +4,7 @@
 [ext_resource path="res://Overlap/CommodityDetectionZone.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Overlap/CommodityExtractionZone.tscn" type="PackedScene" id=4]
 
-[node name="CommodityController" type="Spatial"]
+[node name="CommodityController" type="Node3D"]
 script = ExtResource( 1 )
 
 [node name="CommodityDetectionZone" parent="." instance=ExtResource( 2 )]
@@ -17,7 +17,7 @@ autostart = true
 [node name="ExtractTimer" type="Timer" parent="."]
 wait_time = 0.1
 
-[node name="CarriedCommodities" type="Spatial" parent="."]
+[node name="CarriedCommodities" type="Node3D" parent="."]
 
 [connection signal="commodity_available" from="CommodityExtractionZone" to="." method="_on_CommodityExtractionZone_commodity_available"]
 [connection signal="timeout" from="ConsumeTimer" to="." method="_on_ConsumeTimer_timeout"]

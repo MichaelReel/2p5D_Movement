@@ -1,4 +1,4 @@
-extends KinematicBody
+extends CharacterBody3D
 
 
 enum {
@@ -15,25 +15,25 @@ const STATE_COLORS := {
 	CHASE: Color(1.0, 0.0, 0.0, 1.0),
 }
 
-export (float) var max_speed := 5.0
-export (float) var friction := 200.0
-export (float) var acceleration := 10.0
-export (float) var arrival_range := 1.0
-export (float) var chase_update_time := 1.0
-export (float) var soft_push_factor := 20.0
-export (float) var hurt_timeout := 0.4
+@export var max_speed := 5.0
+@export var friction := 200.0
+@export var acceleration := 10.0
+@export var arrival_range := 1.0
+@export var chase_update_time := 1.0
+@export var soft_push_factor := 20.0
+@export var hurt_timeout := 0.4
 
-onready var parent := get_parent()  # For death effect + debug, could be scene root
-onready var nav : NavigationAgent = $NavigationAgent
-onready var wing_material : SpatialMaterial = $AnimatedComponents/Body/LeftWingPivot/WingMesh.get_surface_material(0)
-onready var player_detection_zone := $PlayerDetectionZone
-onready var wander_controller = $WanderController
-onready var soft_collision := $SoftCollision
-onready var stats := $Stats
-onready var hurt_box := $Vunerable
-onready var invunerability_animation_player := $InvunerabilityAnimationPlayer
-onready var state := _pick_random_state(NON_CHASE_STATES)
-onready var chase_reset_time := chase_update_time
+@onready var parent := get_parent()  # For death effect + debug, could be scene root
+@onready var nav : NavigationAgent3D = $NavigationAgent3D
+@onready var wing_material : StandardMaterial3D = $AnimatedComponents/Body/LeftWingPivot/WingMesh.get_surface_override_material(0)
+@onready var player_detection_zone := $PlayerDetectionZone
+@onready var wander_controller = $WanderController
+@onready var soft_collision := $SoftCollision
+@onready var stats := $Stats
+@onready var hurt_box := $Vunerable
+@onready var invunerability_animation_player := $InvunerabilityAnimationPlayer
+@onready var state := _pick_random_state(NON_CHASE_STATES)
+@onready var chase_reset_time := chase_update_time
 
 var velocity := Vector3.ZERO
 
@@ -80,7 +80,7 @@ func _to_wander_state():
 
 
 func _to_chase_state():
-	var player : Spatial = player_detection_zone.player
+	var player : Node3D = player_detection_zone.player
 	if player != null:
 		_path_to_global_position(player.global_transform.origin)
 
@@ -107,7 +107,7 @@ func _in_chase_state(delta):
 	chase_reset_time -= delta
 	if chase_reset_time <= 0 or nav.is_navigation_finished():
 		chase_reset_time = chase_update_time
-		var player : Spatial = player_detection_zone.player
+		var player : Node3D = player_detection_zone.player
 		if player != null:
 			_path_to_global_position(player.global_transform.origin)
 		else:
@@ -129,18 +129,21 @@ func _apply_velocity():
 	var facing := global_transform.origin + Vector3(velocity.x, 0, velocity.z)
 	if facing != global_transform.origin:
 		look_at(facing, Vector3.UP)
-	velocity = move_and_slide(velocity, Vector3.UP)
+	set_velocity(velocity)
+	set_up_direction(Vector3.UP)
+	move_and_slide()
+	velocity = velocity
 
 
 func _path_to_global_position(target_pos : Vector3):
-	nav.set_target_location(target_pos)
+	nav.set_target_position(target_pos)
 
 
 func _update_velocity_for_pathed_position(delta : float):
 	if nav.is_navigation_finished():
 		return
 
-	var path_next : Vector3 = nav.get_next_location()
+	var path_next : Vector3 = nav.get_next_path_position()
 	var direction : Vector3 = global_transform.origin.direction_to(path_next)
 	velocity = velocity.move_toward(direction * max_speed, acceleration * delta)
 
@@ -156,7 +159,7 @@ func _pick_random_state(state_list : Array) -> int:
 
 
 func _create_death_effect():
-	var death_effect := DeathEffect.instance()
+	var death_effect := DeathEffect.instantiate()
 	parent.add_child(death_effect)
 	death_effect.global_transform.origin = global_transform.origin
 	death_effect.emitting = true

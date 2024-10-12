@@ -3,13 +3,13 @@
 [ext_resource path="res://Entities/NPCs/Commodities/CarriedCommodity.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Entities/state_material.tres" type="Material" id=2]
 
-[sub_resource type="CubeMesh" id=1]
+[sub_resource type="BoxMesh" id=1]
 size = Vector3( 0.5, 0.5, 0.5 )
 
 [node name="CarriedFood" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 4, 0 )
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 4, 0 )
 type = 1
 
-[node name="MeshInstance" parent="." index="0"]
+[node name="MeshInstance3D" parent="." index="0"]
 mesh = SubResource( 1 )
 material/0 = ExtResource( 2 )

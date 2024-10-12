@@ -1,3 +1,3 @@
-extends Area
+extends Area3D
 
-export (float) var damage : int = 1
+@export var damage: float = 1

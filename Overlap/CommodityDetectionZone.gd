@@ -1,11 +1,11 @@
-extends Area
+extends Area3D
 
 var commodities : Dictionary = {}
 
 
 func can_recall_commodity(type : int) -> bool:
 	# Will worry about commodity types later
-	return commodities.has(type) and not commodities[type].empty()
+	return commodities.has(type) and not commodities[type].is_empty()
 
 
 func _on_CommodityDetectionZone_area_entered(area):

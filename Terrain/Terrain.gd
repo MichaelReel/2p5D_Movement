@@ -1,23 +1,23 @@
 extends Navigation
 
 
-export (Rect2) var floor_space := Rect2(Vector2(-20, -20), Vector2(40, 40))
-export (int, 1, 10) var grid_height := 4
-export (int, 1, 10) var retaining_wall_height := 10
-export (float) var noise_threshold := 0.20
-export (float) var threshold_per_level := 0.05
+@export var floor_space := Rect2(Vector2(-20, -20), Vector2(40, 40))
+@export var grid_height := 4 # (int, 1, 10)
+@export var retaining_wall_height := 10 # (int, 1, 10)
+@export var noise_threshold := 0.20
+@export var threshold_per_level := 0.05
 
 
-onready var nav_mesh := $NavigationMeshInstance
-onready var grid_map := $NavigationMeshInstance/GridMap
-onready var mesh_lib : MeshLibrary = grid_map.mesh_library
-onready var cube := mesh_lib.find_item_by_name("cube")
-onready var cube_water := mesh_lib.find_item_by_name("cube_water")
-onready var cube_dirt := mesh_lib.find_item_by_name("cube_dirt")
-onready var cube_rock := mesh_lib.find_item_by_name("cube_rock")
-onready var cube_grass := mesh_lib.find_item_by_name("cube_grass")
-onready var space := GridMap.INVALID_CELL_ITEM
-onready var noise := OpenSimplexNoise.new()
+@onready var nav_mesh := $NavigationRegion3D
+@onready var grid_map := $NavigationRegion3D/GridMap
+@onready var mesh_lib : MeshLibrary = grid_map.mesh_library
+@onready var cube := mesh_lib.find_item_by_name("cube")
+@onready var cube_water := mesh_lib.find_item_by_name("cube_water")
+@onready var cube_dirt := mesh_lib.find_item_by_name("cube_dirt")
+@onready var cube_rock := mesh_lib.find_item_by_name("cube_rock")
+@onready var cube_grass := mesh_lib.find_item_by_name("cube_grass")
+@onready var space := GridMap.INVALID_CELL_ITEM
+@onready var noise := FastNoiseLite.new()
 
 
 func _ready():
@@ -33,7 +33,7 @@ func _ready():
 func _setup_noise():
 #	randomize()
 	noise.seed = randi()
-	noise.octaves = 2
+	noise.fractal_octaves = 2
 	noise.period = 20.0
 	noise.persistence = 0.8
 
@@ -83,7 +83,7 @@ func _AABB_noise_fill(bounds: AABB, tile: int):
 		for z in range(bounds.position.z, bounds.end.z):
 			for x in range(bounds.position.x, bounds.end.x):
 				if _noise_threshold(x, y, z):
-					grid_map.set_cell_item(x, y, z, tile)
+					grid_map.set_cell_item(Vector3(x, y, z), tile)
 
 
 func _noise_threshold(x : int, y : int, z : int) -> bool:
@@ -126,5 +126,5 @@ func _AABB_fill(bounds: AABB, tile: int):
 	for y in range(bounds.position.y, bounds.end.y):
 		for z in range(bounds.position.z, bounds.end.z):
 			for x in range(bounds.position.x, bounds.end.x):
-				grid_map.set_cell_item(x, y, z, tile)
+				grid_map.set_cell_item(Vector3(x, y, z), tile)
 

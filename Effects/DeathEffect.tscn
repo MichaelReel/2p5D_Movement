@@ -8,7 +8,7 @@ _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
 [sub_resource type="CurveTexture" id=2]
 curve = SubResource( 1 )
 
-[sub_resource type="ParticlesMaterial" id=3]
+[sub_resource type="ParticleProcessMaterial" id=3]
 emission_shape = 1
 emission_sphere_radius = 1.0
 direction = Vector3( 0, 1, 0 )
@@ -21,7 +21,7 @@ radial_accel = 45.0
 damping = 10.0
 damping_random = 1.0
 
-[sub_resource type="CubeMesh" id=4]
+[sub_resource type="BoxMesh" id=4]
 size = Vector3( 0.5, 0.5, 0.5 )
 
 [node name="DeathEffect" type="Particles"]

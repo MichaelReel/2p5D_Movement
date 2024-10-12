@@ -1,15 +1,15 @@
-extends Spatial
+extends Node3D
 
 
 const Projectile = preload("res://Player/Weapons/RangeWeapon/Projectile.tscn")
 
-export (float) var projectile_speed := 75.0
-export (float) var projectile_gravity := 1.0
-export (float) var damage := 1.0
+@export var projectile_speed := 75.0
+@export var projectile_gravity := 1.0
+@export var damage := 1.0
 
-onready var weapon_animation_player := $AnimationPlayer
-onready var mesh_instance := $MeshInstance
-onready var scene_root := get_tree().get_root()
+@onready var weapon_animation_player := $AnimationPlayer
+@onready var mesh_instance := $MeshInstance3D
+@onready var scene_root := get_tree().get_root()
 
 
 func perform_attack():
@@ -20,7 +20,7 @@ func _create_projectile():
 	"""
 	Call from the appropriate frame in the animation to create a projectile
 	"""
-	var projectile : KinematicBody = Projectile.instance()
+	var projectile : CharacterBody3D = Projectile.instantiate()
 	var basis = get_global_transform().basis
 	var firing_direction : Vector3 = basis.z
 	

@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 signal commodity_desired(type)
 signal commodity_exhausted(type)
@@ -6,9 +6,9 @@ signal extraction_started
 signal extraction_complete
 
 
-onready var commodities := $CarriedCommodities.get_children()
-onready var extraction_timer := $ExtractTimer
-onready var commodity_detection_zone := $CommodityDetectionZone
+@onready var commodities := $CarriedCommodities.get_children()
+@onready var extraction_timer := $ExtractTimer
+@onready var commodity_detection_zone := $CommodityDetectionZone
 
 
 var commodity_map := {}
@@ -19,9 +19,9 @@ var extracting
 func _ready():
 	for commodity in commodities:
 		commodity_map[commodity.type] = commodity
-		var _err = commodity.connect("commodity_desired", self, "_on_Commodity_commodity_desired")
-		_err = commodity.connect("commodity_exhausted", self, "_on_Commodity_commodity_exhausted")
-		_err = commodity.connect("commodity_replenished", self, "_on_Commodity_commodity_replenished")
+		var _err = commodity.connect("commodity_desired", Callable(self, "_on_Commodity_commodity_desired"))
+		_err = commodity.connect("commodity_exhausted", Callable(self, "_on_Commodity_commodity_exhausted"))
+		_err = commodity.connect("commodity_replenished", Callable(self, "_on_Commodity_commodity_replenished"))
 
 
 func desired_commodity_in_range() -> bool:
@@ -36,7 +36,7 @@ func desired_commodity_in_range() -> bool:
 
 
 func priority_commodity_position() -> Vector3:
-	if desire_queue.empty():
+	if desire_queue.is_empty():
 		# Something cleared the queue, sit still and await state to change
 		return global_transform.origin
 	
@@ -44,7 +44,7 @@ func priority_commodity_position() -> Vector3:
 		# TODO: Need to guard against an infinite loop here
 		desire_queue.push_back(desire_queue.pop_front()) 
 	
-	var commodity : Spatial = commodity_detection_zone.commodities[desire_queue.front()][0]
+	var commodity : Node3D = commodity_detection_zone.commodities[desire_queue.front()][0]
 	return commodity.global_transform.origin
 
 

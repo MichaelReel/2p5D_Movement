@@ -1,4 +1,4 @@
-extends KinematicBody
+extends CharacterBody3D
 
 var velocity := Vector3.ZERO
 var gravity := 9.8
@@ -9,5 +9,8 @@ func _physics_process(delta : float):
 		velocity.y = 0
 	else:
 		velocity.y -= gravity * delta
-	velocity = move_and_slide(velocity, Vector3.UP)
+	set_velocity(velocity)
+	set_up_direction(Vector3.UP)
+	move_and_slide()
+	velocity = velocity
 	

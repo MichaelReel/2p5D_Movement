@@ -1,13 +1,13 @@
-extends Spatial
+extends Node3D
 
 
 const Bat := preload("res://Entities/Enemies/Bat.tscn")
 
-export (float) var press_timeout := 1.5
+@export var press_timeout := 1.5
 
-onready var animation_player := $AnimationPlayer
-onready var press_box := $Vunerable
-onready var parent := get_parent()
+@onready var animation_player := $AnimationPlayer
+@onready var press_box := $Vunerable
+@onready var parent := get_parent()
 
 
 var spawn_locations := []
@@ -15,13 +15,13 @@ var spawn_locations := []
 
 func _ready():
 	for child in get_children():
-		if child is Position3D:
+		if child is Marker3D:
 			spawn_locations.append(child.global_transform.origin)
 
 
 func _spawn_related_entities():
 	for location in spawn_locations:
-		var bat = Bat.instance()
+		var bat = Bat.instantiate()
 		parent.add_child(bat)
 		bat.global_transform.origin = location
 		bat.reset_start_position()

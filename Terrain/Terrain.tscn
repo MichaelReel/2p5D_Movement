@@ -10,10 +10,10 @@ agent_max_climb = 1.0
 script = ExtResource( 1 )
 floor_space = Rect2( -40, -40, 80, 80 )
 
-[node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="."]
-navmesh = SubResource( 1 )
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource( 1 )
 
-[node name="GridMap" type="GridMap" parent="NavigationMeshInstance"]
+[node name="GridMap" type="GridMap" parent="NavigationRegion3D"]
 mesh_library = ExtResource( 2 )
 cell_size = Vector3( 1, 1, 1 )
 __meta__ = {

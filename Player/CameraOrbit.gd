@@ -1,14 +1,14 @@
-extends Spatial
+extends Node3D
 
 
-export (float) var look_sensitivity : float = 40.0
-export (float) var min_look_angle : float = -20.0
-export (float) var max_look_angle : float = 75.0
+@export var look_sensitivity: float = 40.0
+@export var min_look_angle: float = -20.0
+@export var max_look_angle: float = 75.0
 
 var mouse_delta : Vector2 = Vector2.ZERO
 
-onready var player : Spatial = get_parent()
-onready var camera := $Camera
+@onready var player : Node3D = get_parent()
+@onready var camera := $Camera3D
 
 
 func _input(event : InputEvent):
@@ -31,8 +31,8 @@ func _process(delta : float):
 	mouse_delta = Vector2.ZERO
 
 
-func move_camera_to_scene(new_scene : Spatial):
-	var transform : Transform = camera.global_transform
+func move_camera_to_scene(new_scene : Node3D):
+	var transform : Transform3D = camera.global_transform
 	remove_child(camera)
 	new_scene.add_child(camera)
 	camera.global_transform = transform

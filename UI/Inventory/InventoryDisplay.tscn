@@ -7,17 +7,17 @@
 anchor_left = 0.902
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 0.351929
+offset_left = 0.351929
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="FrameRect" type="ColorRect" parent="."]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 90.0
-margin_bottom = 590.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 90.0
+offset_bottom = 590.0
 color = Color( 0.12549, 0.12549, 0.12549, 0.12549 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -28,10 +28,10 @@ position = Vector2( 40, 40 )
 
 [node name="SelectRect" type="ColorRect" parent="FrameRect/InventorySlot_0"]
 show_behind_parent = true
-margin_left = -35.0
-margin_top = -35.0
-margin_right = 35.0
-margin_bottom = 35.0
+offset_left = -35.0
+offset_top = -35.0
+offset_right = 35.0
+offset_bottom = 35.0
 color = Color( 0, 0, 0, 0.501961 )
 __meta__ = {
 "_edit_use_anchors_": false

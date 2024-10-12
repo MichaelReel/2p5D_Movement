@@ -1,16 +1,16 @@
-extends Spatial
+extends Node3D
 
 const PickedUpEffect := preload("res://Effects/CollectEffect.tscn")
 
-export (PackedScene) var weapon
+@export var weapon: PackedScene
 
-onready var mesh_instance := $MeshInstance
-onready var parent := get_parent()  # For death effect + debug, could be scene root
+@onready var mesh_instance := $MeshInstance3D
+@onready var parent := get_parent()  # For death effect + debug, could be scene root
 
 var picked_up_effect
 
 func _ready():
-	picked_up_effect = PickedUpEffect.instance()
+	picked_up_effect = PickedUpEffect.instantiate()
 	picked_up_effect.draw_pass_1 = mesh_instance.mesh
 
 

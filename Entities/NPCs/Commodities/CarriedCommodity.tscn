@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Entities/NPCs/Commodities/CarriedCommodity.gd" type="Script" id=1]
 
-[node name="CarriedCommodity" type="Spatial"]
+[node name="CarriedCommodity" type="Node3D"]
 script = ExtResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]

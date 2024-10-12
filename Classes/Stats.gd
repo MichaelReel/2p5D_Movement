@@ -5,8 +5,8 @@ signal no_health
 signal health_changed(value)
 signal max_health_changed(value)
 
-export (int) var max_health : int = 1 setget set_max_health
-var health : int = max_health setget set_health
+@export var max_health: int = 1: set = set_max_health
+var health : int = max_health: set = set_health
 
 
 func _ready():

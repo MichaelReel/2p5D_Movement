@@ -12,38 +12,38 @@
 [sub_resource type="Animation" id=8]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("AnimatedComponents/Body:translation")
+tracks/0/path = NodePath("AnimatedComponents/Body:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("AnimatedComponents/Body/RightWingPivot:translation")
+tracks/1/path = NodePath("AnimatedComponents/Body/RightWingPivot:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("AnimatedComponents/Body/LeftWingPivot:translation")
+tracks/2/path = NodePath("AnimatedComponents/Body/LeftWingPivot:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ) ]
 }
@@ -59,8 +59,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.2, 0.3, 0.4, 0.6 ),
+"transitions": PackedFloat32Array( 1, 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 30 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, -60 ), Vector3( 0, 0, 0 ) ]
 }
@@ -71,41 +71,41 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.2, 0.3, 0.4, 0.6 ),
+"transitions": PackedFloat32Array( 1, 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -30 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, 60 ), Vector3( 0, 0, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("AnimatedComponents/Body:translation")
+tracks/2/path = NodePath("AnimatedComponents/Body:position")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.2, 0.3, 0.4, 0.6 ),
+"transitions": PackedFloat32Array( 1, 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 1, 0 ), Vector3( 0, 0.6, 0 ), Vector3( 0, 1, 0 ), Vector3( 0, 1.4, 0 ), Vector3( 0, 1, 0 ) ]
 }
 
-[sub_resource type="CubeMesh" id=2]
+[sub_resource type="BoxMesh" id=2]
 size = Vector3( 0.75, 0.1, 1 )
 
 [sub_resource type="PrismMesh" id=9]
 size = Vector3( 0.4, 0.2, 0.3 )
 
-[sub_resource type="SphereShape" id=10]
+[sub_resource type="SphereShape3D" id=10]
 radius = 0.2
 
-[sub_resource type="CapsuleShape" id=3]
+[sub_resource type="CapsuleShape3D" id=3]
 radius = 8.0
 height = 4.0
 
-[sub_resource type="CylinderShape" id=4]
+[sub_resource type="CylinderShape3D" id=4]
 radius = 0.8
 
-[sub_resource type="CapsuleShape" id=5]
+[sub_resource type="CapsuleShape3D" id=5]
 radius = 0.7
 height = 0.4
 
@@ -120,8 +120,8 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.201 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PackedFloat32Array( 0, 0.1, 0.2, 0.201 ),
+"transitions": PackedFloat32Array( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Color( 0.960784, 0.917647, 0.576471, 1 ), Color( 0.101961, 0.0235294, 0.270588, 1 ), Color( 1, 1, 1, 1 ), Color( 0.960784, 0.917647, 0.576471, 1 ) ]
 }
@@ -136,13 +136,13 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PackedFloat32Array( 0 ),
+"transitions": PackedFloat32Array( 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 
-[node name="Bat" type="KinematicBody"]
+[node name="Bat" type="CharacterBody3D"]
 collision_layer = 0
 script = ExtResource( 4 )
 
@@ -151,29 +151,29 @@ autoplay = "flap"
 anims/RESET = SubResource( 8 )
 anims/flap = SubResource( 1 )
 
-[node name="AnimatedComponents" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.843541, -0.537064, 0, 0.537064, 0.843541, 0, 0.5, -0.33308 )
+[node name="AnimatedComponents" type="Node3D" parent="."]
+transform = Transform3D( 1, 0, 0, 0, 0.843541, -0.537064, 0, 0.537064, 0.843541, 0, 0.5, -0.33308 )
 
-[node name="Body" type="Spatial" parent="AnimatedComponents"]
+[node name="Body" type="Node3D" parent="AnimatedComponents"]
 
-[node name="RightWingPivot" type="Spatial" parent="AnimatedComponents/Body"]
-transform = Transform( 0.90783, 0.419339, 0, -0.419339, 0.90783, 0, 0, 0, 1, 0, 0, 0 )
+[node name="RightWingPivot" type="Node3D" parent="AnimatedComponents/Body"]
+transform = Transform3D( 0.90783, 0.419339, 0, -0.419339, 0.90783, 0, 0, 0, 1, 0, 0, 0 )
 
-[node name="WingMesh" type="MeshInstance" parent="AnimatedComponents/Body/RightWingPivot"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0, 0 )
+[node name="WingMesh" type="MeshInstance3D" parent="AnimatedComponents/Body/RightWingPivot"]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = ExtResource( 7 )
 
-[node name="LeftWingPivot" type="Spatial" parent="AnimatedComponents/Body"]
-transform = Transform( 0.90783, -0.419339, 0, 0.419339, 0.90783, 0, 0, 0, 1, 0, 0, 0 )
+[node name="LeftWingPivot" type="Node3D" parent="AnimatedComponents/Body"]
+transform = Transform3D( 0.90783, -0.419339, 0, 0.419339, 0.90783, 0, 0, 0, 1, 0, 0, 0 )
 
-[node name="WingMesh" type="MeshInstance" parent="AnimatedComponents/Body/LeftWingPivot"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0, 0 )
+[node name="WingMesh" type="MeshInstance3D" parent="AnimatedComponents/Body/LeftWingPivot"]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.45, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = ExtResource( 7 )
 
-[node name="HeadMesh" type="MeshInstance" parent="AnimatedComponents/Body"]
-transform = Transform( 1, 0, 0, 0, -0.843542, -0.537064, 0, 0.537064, -0.843542, 0, -0.168639, -0.643161 )
+[node name="HeadMesh" type="MeshInstance3D" parent="AnimatedComponents/Body"]
+transform = Transform3D( 1, 0, 0, 0, -0.843542, -0.537064, 0, 0.537064, -0.843542, 0, -0.168639, -0.643161 )
 mesh = SubResource( 9 )
 material/0 = ExtResource( 7 )
 
@@ -182,8 +182,8 @@ collision_layer = 0
 collision_mask = 4
 damage = 2.0
 
-[node name="CollisionShape" parent="AnimatedComponents/Body/Damage" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.65 )
+[node name="CollisionShape3D" parent="AnimatedComponents/Body/Damage" index="0"]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.65 )
 shape = SubResource( 10 )
 
 [node name="WanderController" parent="." instance=ExtResource( 6 )]
@@ -192,14 +192,14 @@ wander_max = 10.0
 
 [node name="PlayerDetectionZone" parent="." instance=ExtResource( 5 )]
 
-[node name="CollisionShape" parent="PlayerDetectionZone" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
+[node name="CollisionShape3D" parent="PlayerDetectionZone" index="0"]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
 shape = SubResource( 3 )
 
 [node name="SoftCollision" parent="." instance=ExtResource( 2 )]
 
-[node name="CollisionShape" parent="SoftCollision" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+[node name="CollisionShape3D" parent="SoftCollision" index="0"]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 shape = SubResource( 4 )
 
 [node name="Stats" parent="." instance=ExtResource( 3 )]
@@ -208,15 +208,15 @@ max_health = 2
 [node name="Vunerable" parent="." instance=ExtResource( 1 )]
 collision_layer = 16
 
-[node name="CollisionShape" parent="Vunerable" index="0"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1, 0.1 )
+[node name="CollisionShape3D" parent="Vunerable" index="0"]
+transform = Transform3D( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1, 0.1 )
 shape = SubResource( 5 )
 
 [node name="InvunerabilityAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/start = SubResource( 6 )
 anims/stop = SubResource( 7 )
 
-[node name="NavigationAgent" type="NavigationAgent" parent="."]
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 
 [connection signal="no_health" from="Stats" to="." method="_on_Stats_no_health"]
 [connection signal="damage_received" from="Vunerable" to="." method="_on_Vunerable_damage_received"]

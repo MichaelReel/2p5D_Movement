@@ -1,8 +1,8 @@
-extends Sprite
+extends Sprite2D
 
 
-onready var viewport : Viewport = $Viewport
-onready var icon := $Viewport/InventoryIcon
+@onready var viewport : SubViewport = $SubViewport
+@onready var icon := $SubViewport/InventoryIcon
 
 func _process(_delta):
 	texture = viewport.get_texture()

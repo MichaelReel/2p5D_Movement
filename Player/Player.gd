@@ -1,11 +1,11 @@
-extends KinematicBody
+extends CharacterBody3D
 
 signal no_health
 signal health_fraction_of_max(fraction_health)
 
 
 const DeathEffect := preload("res://Effects/PlayerDeathEffect.tscn")
-const FOOT_ROTATION_THRESHOLD := deg2rad(45)
+const FOOT_ROTATION_THRESHOLD := deg_to_rad(45)
 
 enum {
 	MOVE,
@@ -13,26 +13,26 @@ enum {
 	STAND
 }
 
-export (float) var acceleration := 150.0
-export (float) var air_friction := 4.0
-export (float) var ground_friction := 80.0
-export (float) var max_speed := 5.0
-export (float) var jump_force := 10.0
-export (float) var gravity := 25.0
-export (bool) var air_control := true
-export (float) var spawn_timeout := 1.0
-export (float) var hurt_timeout := 0.3
+@export var acceleration := 150.0
+@export var air_friction := 4.0
+@export var ground_friction := 80.0
+@export var max_speed := 5.0
+@export var jump_force := 10.0
+@export var gravity := 25.0
+@export var air_control := true
+@export var spawn_timeout := 1.0
+@export var hurt_timeout := 0.3
 
-onready var torso := $Body/Torso
-onready var weapon_weilder := $Body/Torso/WeaponWielder
-onready var hurt_box := $Vunerable
-onready var invincibility_animation_player := $InvincibilityAnimationPlayer
-onready var lower_body := $Body/Waist
-onready var lower_body_animation_player := $Body/Waist/AnimationPlayer
-onready var camera_arm := $Body/Torso/CameraOrbit
-onready var stats := PlayerStats
-onready var inventory := InventoryManager
-onready var parent := get_parent()
+@onready var torso := $Body/Torso
+@onready var weapon_weilder := $Body/Torso/WeaponWielder
+@onready var hurt_box := $Vunerable
+@onready var invincibility_animation_player := $InvincibilityAnimationPlayer
+@onready var lower_body := $Body/Waist
+@onready var lower_body_animation_player := $Body/Waist/AnimationPlayer
+@onready var camera_arm := $Body/Torso/CameraOrbit
+@onready var stats := PlayerStats
+@onready var inventory := InventoryManager
+@onready var parent := get_parent()
 
 var velocity := Vector3.ZERO
 var horizontal_velocity := Vector2.ZERO
@@ -42,8 +42,8 @@ var back_peddle : bool = false
 
 
 func _ready():
-	var _err = stats.connect("no_health", self, "_on_PlayerStats_no_health")
-	_err = inventory.connect("selection_updated", self, "_on_Inventory_item_selected")
+	var _err = stats.connect("no_health", Callable(self, "_on_PlayerStats_no_health"))
+	_err = inventory.connect("selection_updated", Callable(self, "_on_Inventory_item_selected"))
 	hurt_box.start_invincibility(spawn_timeout)
 
 
@@ -60,7 +60,10 @@ func _physics_process(delta):
 		velocity += Vector3.UP * jump_force
 		_try_state(JUMP)
 		
-	velocity = move_and_slide(velocity, Vector3.UP)
+	set_velocity(velocity)
+	set_up_direction(Vector3.UP)
+	move_and_slide()
+	velocity = velocity
 	
 	if Input.is_action_just_pressed("move_attack"):
 		for weapon in weapon_weilder.get_children():
@@ -167,7 +170,7 @@ func _move_camera_to_parent():
 
 
 func _create_death_effect():
-	var death_effect := DeathEffect.instance()
+	var death_effect := DeathEffect.instantiate()
 	parent.add_child(death_effect)
 	death_effect.global_transform.origin = global_transform.origin
 	death_effect.emitting = true

@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Effects/ParticleTimerFree.gd" type="Script" id=1]
 
-[sub_resource type="ParticlesMaterial" id=1]
+[sub_resource type="ParticleProcessMaterial" id=1]
 emission_shape = 5
 emission_ring_radius = 1.0
 emission_ring_inner_radius = 1.0

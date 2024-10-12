@@ -5,14 +5,14 @@
 [ext_resource path="res://Entities/TestBody.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Terrain/Terrain.tscn" type="PackedScene" id=4]
 
-[node name="TestNoiseViewer" type="Spatial"]
+[node name="TestNoiseViewer" type="Node3D"]
 
 [node name="Terrain" parent="." instance=ExtResource( 4 )]
 
 [node name="Bat" parent="Terrain" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.29695, 15.9281 )
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.29695, 15.9281 )
 
 [node name="TestBody" parent="." instance=ExtResource( 3 )]
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.57714, 5.244, -5.75234 )
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.57714, 5.244, -5.75234 )
