@@ -32,7 +32,7 @@ func pickup_item(item : Node3D, mesh : Mesh) -> bool:
 	if i < MAX_SLOTS:
 		inventory_slots[i] = item
 		slot_icon_meshes[i] = mesh
-		emit_signal("items_updated")
+		items_updated.emit()
 		return select_slot(i)
 	
 	return false
@@ -59,7 +59,7 @@ func select_slot(slot_index : int) -> bool:
 	"""
 	if inventory_slots[slot_index] != null:
 		selected_slot = slot_index
-		emit_signal("selection_updated", inventory_slots[slot_index], slot_index)
+		selection_updated.emit(inventory_slots[slot_index], slot_index)
 		return true
 	return false
 

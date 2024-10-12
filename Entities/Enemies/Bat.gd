@@ -35,8 +35,6 @@ const STATE_COLORS := {
 @onready var state := _pick_random_state(NON_CHASE_STATES)
 @onready var chase_reset_time := chase_update_time
 
-var velocity := Vector3.ZERO
-
 
 func _physics_process(delta : float):
 	match state:
@@ -154,8 +152,7 @@ func _seek_player():
 
 
 func _pick_random_state(state_list : Array) -> int:
-	state_list.shuffle()
-	return state_list.front()
+	return state_list.pick_random()
 
 
 func _create_death_effect():

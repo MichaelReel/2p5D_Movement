@@ -21,8 +21,8 @@ func _create_projectile():
 	Call from the appropriate frame in the animation to create a projectile
 	"""
 	var projectile : CharacterBody3D = Projectile.instantiate()
-	var basis = get_global_transform().basis
-	var firing_direction : Vector3 = basis.z
+	var muzzle_basis = get_global_transform().basis
+	var firing_direction : Vector3 = muzzle_basis.z
 	
 	scene_root.add_child(projectile)
 	projectile.global_transform = get_global_transform()

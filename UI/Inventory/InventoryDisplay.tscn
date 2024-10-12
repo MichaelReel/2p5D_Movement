@@ -1,30 +1,26 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://bur1ha4ucriai"]
 
-[ext_resource path="res://UI/Inventory/InventorySlot.tscn" type="PackedScene" id=1]
-[ext_resource path="res://UI/Inventory/InventoryDisplay.gd" type="Script" id=2]
+[ext_resource type="PackedScene" path="res://UI/Inventory/InventorySlot.tscn" id="1"]
+[ext_resource type="Script" path="res://UI/Inventory/InventoryDisplay.gd" id="2"]
 
 [node name="InventoryDisplay" type="Control"]
+layout_mode = 3
 anchor_left = 0.902
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 0.351929
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("2")
 
 [node name="FrameRect" type="ColorRect" parent="."]
+layout_mode = 0
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 90.0
 offset_bottom = 590.0
-color = Color( 0.12549, 0.12549, 0.12549, 0.12549 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+color = Color(0.12549, 0.12549, 0.12549, 0.12549)
 
-[node name="InventorySlot_0" parent="FrameRect" instance=ExtResource( 1 )]
-position = Vector2( 40, 40 )
+[node name="InventorySlot_0" parent="FrameRect" instance=ExtResource("1")]
+position = Vector2(40, 40)
 
 [node name="SelectRect" type="ColorRect" parent="FrameRect/InventorySlot_0"]
 show_behind_parent = true
@@ -32,28 +28,25 @@ offset_left = -35.0
 offset_top = -35.0
 offset_right = 35.0
 offset_bottom = 35.0
-color = Color( 0, 0, 0, 0.501961 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+color = Color(0, 0, 0, 0.501961)
 
-[node name="InventorySlot_1" parent="FrameRect" instance=ExtResource( 1 )]
-position = Vector2( 40, 110 )
+[node name="InventorySlot_1" parent="FrameRect" instance=ExtResource("1")]
+position = Vector2(40, 110)
 
-[node name="InventorySlot_2" parent="FrameRect" instance=ExtResource( 1 )]
-position = Vector2( 40, 180 )
+[node name="InventorySlot_2" parent="FrameRect" instance=ExtResource("1")]
+position = Vector2(40, 180)
 
-[node name="InventorySlot_3" parent="FrameRect" instance=ExtResource( 1 )]
-position = Vector2( 40, 250 )
+[node name="InventorySlot_3" parent="FrameRect" instance=ExtResource("1")]
+position = Vector2(40, 250)
 
-[node name="InventorySlot_4" parent="FrameRect" instance=ExtResource( 1 )]
-position = Vector2( 40, 320 )
+[node name="InventorySlot_4" parent="FrameRect" instance=ExtResource("1")]
+position = Vector2(40, 320)
 
-[node name="InventorySlot_5" parent="FrameRect" instance=ExtResource( 1 )]
-position = Vector2( 40, 390 )
+[node name="InventorySlot_5" parent="FrameRect" instance=ExtResource("1")]
+position = Vector2(40, 390)
 
-[node name="InventorySlot_6" parent="FrameRect" instance=ExtResource( 1 )]
-position = Vector2( 40, 460 )
+[node name="InventorySlot_6" parent="FrameRect" instance=ExtResource("1")]
+position = Vector2(40, 460)
 
-[node name="InventorySlot_7" parent="FrameRect" instance=ExtResource( 1 )]
-position = Vector2( 40, 530 )
+[node name="InventorySlot_7" parent="FrameRect" instance=ExtResource("1")]
+position = Vector2(40, 530)

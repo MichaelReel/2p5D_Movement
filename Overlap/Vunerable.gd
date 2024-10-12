@@ -19,9 +19,9 @@ func _set_invincible(value : bool):
 		return
 	invincible = value
 	if invincible:
-		emit_signal("invincibility_started")
+		invincibility_started.emit()
 	else:
-		emit_signal("invincibility_ended")
+		invincibility_ended.emit()
 
 
 func start_invincibility(duration : float):
@@ -54,7 +54,7 @@ func _on_Vunerable_area_entered(area : Area3D):
 	var damage : float = 1
 	if "damage" in area:
 		damage = area.damage
-	emit_signal("damage_received", damage)
+	damage_received.emit(damage)
 	create_hit_effect(area)
 
 
@@ -62,6 +62,6 @@ func _on_Vunerable_body_entered(body : Node):
 	var damage : float = 1
 	if "damage" in body:
 		damage = body.damage
-	emit_signal("damage_received", damage)
+	damage_received.emit(damage)
 	create_hit_effect(body)
 	body.queue_free()

@@ -32,7 +32,7 @@ func _process(delta : float):
 
 
 func move_camera_to_scene(new_scene : Node3D):
-	var transform : Transform3D = camera.global_transform
+	var cam_transform : Transform3D = camera.global_transform
 	remove_child(camera)
 	new_scene.add_child(camera)
-	camera.global_transform = transform
+	camera.global_transform = cam_transform

@@ -34,7 +34,6 @@ enum {
 @onready var inventory := InventoryManager
 @onready var parent := get_parent()
 
-var velocity := Vector3.ZERO
 var horizontal_velocity := Vector2.ZERO
 var ground_orientation := Vector2.UP
 var state : int = STAND
@@ -42,8 +41,8 @@ var back_peddle : bool = false
 
 
 func _ready():
-	var _err = stats.connect("no_health", Callable(self, "_on_PlayerStats_no_health"))
-	_err = inventory.connect("selection_updated", Callable(self, "_on_Inventory_item_selected"))
+	var _err = stats.no_health.connect(_on_PlayerStats_no_health)
+	_err = inventory.selection_updated.connect(_on_Inventory_item_selected)
 	hurt_box.start_invincibility(spawn_timeout)
 
 
@@ -154,7 +153,7 @@ func _on_Vunerable_damage_received(damage):
 	stats.health -= damage
 	hurt_box.start_invincibility(hurt_timeout)
 
-	emit_signal("health_fraction_of_max", stats.get_health_as_fraction())
+	health_fraction_of_max.emit(stats.get_health_as_fraction())
 
 
 func _on_Vunerable_invincibility_started():
@@ -179,7 +178,7 @@ func _create_death_effect():
 func _on_PlayerStats_no_health():
 	_move_camera_to_parent()
 	_create_death_effect()
-	emit_signal("no_health")
+	no_health.emit()
 	queue_free()
 
 
@@ -232,7 +231,7 @@ func _play_body_running_animation():
 
 
 func pickup_weapon(item_scene : PackedScene, icon_mesh : Mesh) -> bool:
-	var item_instance = item_scene.instance()
+	var item_instance = item_scene.instantiate()
 	return inventory.pickup_item(item_instance, icon_mesh)
 
 
@@ -240,4 +239,3 @@ func _on_Inventory_item_selected(item_instance, _index):
 	for child in weapon_weilder.get_children():
 		weapon_weilder.remove_child(child)
 	weapon_weilder.add_child(item_instance)
-

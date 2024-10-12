@@ -1,4 +1,4 @@
-extends Navigation
+extends Node3D
 
 
 @export var floor_space := Rect2(Vector2(-20, -20), Vector2(40, 40))
@@ -127,4 +127,3 @@ func _AABB_fill(bounds: AABB, tile: int):
 		for z in range(bounds.position.z, bounds.end.z):
 			for x in range(bounds.position.x, bounds.end.x):
 				grid_map.set_cell_item(Vector3(x, y, z), tile)
-

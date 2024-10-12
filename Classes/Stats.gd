@@ -16,14 +16,14 @@ func _ready():
 func set_max_health(value : int):
 	max_health = value
 	self.health = int(min(health, max_health))
-	emit_signal("max_health_changed", max_health)
+	max_health_changed.emit(max_health)
 
 
 func set_health(value : int):
 	health = value
-	emit_signal("health_changed", health)
+	health_changed.emit(health)
 	if health <= 0:
-		emit_signal("no_health")
+		no_health.emit()
 
 
 func get_health_as_fraction() -> float:

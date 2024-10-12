@@ -1,6 +1,5 @@
 extends CharacterBody3D
 
-var velocity := Vector3.ZERO
 var gravity := 9.8
 
 

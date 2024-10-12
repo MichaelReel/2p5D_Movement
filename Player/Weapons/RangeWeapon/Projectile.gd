@@ -4,8 +4,6 @@ extends CharacterBody3D
 @export var gravity := 25.0
 @export var damage := 1.0
 
-var velocity := Vector3.ZERO
-
 
 func _physics_process(delta):
 	

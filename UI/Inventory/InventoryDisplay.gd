@@ -18,8 +18,8 @@ extends Control
 var selected_slot : int
 
 func _ready():
-	var _err = inventory.connect("selection_updated", Callable(self, "_on_Inventory_item_selected"))
-	_err = inventory.connect("items_updated", Callable(self, "_on_Inventory_items_updated"))
+	var _err = inventory.selection_updated.connect(_on_Inventory_item_selected)
+	_err = inventory.items_updated.connect(_on_Inventory_items_updated)
 	_on_Inventory_empty()
 
 
