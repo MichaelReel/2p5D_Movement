@@ -1,13 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://cnsp3alpohx4v"]
+[gd_scene load_steps=4 format=3 uid="uid://cnsp3alpohx4v"]
 
 [ext_resource type="PackedScene" uid="uid://x30b3yorfho7" path="res://UI/Inventory/InventoryIcon.tscn" id="1"]
 [ext_resource type="Script" path="res://UI/Inventory/InventorySlot.gd" id="2"]
+
+[sub_resource type="World3D" id="World3D_72b5n"]
 
 [node name="InventorySlot" type="Sprite2D"]
 position = Vector2(50, 50)
 script = ExtResource("2")
 
 [node name="SubViewport" type="SubViewport" parent="."]
+own_world_3d = true
+world_3d = SubResource("World3D_72b5n")
 transparent_bg = true
 size = Vector2i(60, 60)
 

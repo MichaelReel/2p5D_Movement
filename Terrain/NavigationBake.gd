@@ -1,4 +1,4 @@
-extends Navigation
+extends Node3D
 
 
 @onready var nav_mesh := $NavigationRegion3D
