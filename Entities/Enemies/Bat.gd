@@ -124,8 +124,9 @@ func _update_soft_collisions(delta : float):
 
 
 func _apply_velocity():
-	var facing := global_transform.origin + Vector3(velocity.x, 0, velocity.z)
-	if facing != global_transform.origin:
+	var surface_velocity := Vector3(velocity.x, 0, velocity.z)
+	if surface_velocity != Vector3.ZERO:
+		var facing := global_transform.origin + surface_velocity
 		look_at(facing, Vector3.UP)
 	set_velocity(velocity)
 	set_up_direction(Vector3.UP)
