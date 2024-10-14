@@ -1,10 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://cnyw356f72cax"]
 
-[ext_resource path="res://Classes/Stats.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://Classes/Stats.gd" id="1"]
 
 [node name="PlayerStats" type="Node"]
-script = ExtResource( 1 )
-__meta__ = {
-"_editor_description_": "This is an autoloaded version of the generic stats scene so we access the player stats from both the player entity and the UI."
-}
+script = ExtResource("1")
 max_health = 10
+metadata/editor_description = "This is an autoloaded version of the generic stats scene so we access the player stats from both the player entity and the UI."

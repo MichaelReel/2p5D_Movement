@@ -1,34 +1,29 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://c68jxul47yrf1"]
 
-[ext_resource path="res://UI/HUD/HealthBar.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://UI/HUD/HealthBar.gd" id="1"]
 
-[sub_resource type="Gradient" id=1]
-colors = PackedColorArray( 0.808594, 0.124393, 0.0726471, 1, 0.192469, 0.734375, 0.174988, 1 )
+[sub_resource type="Gradient" id="1"]
+colors = PackedColorArray(0.808594, 0.124393, 0.0726471, 1, 0.192469, 0.734375, 0.174988, 1)
 
 [node name="HealthBar" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 offset_left = 5.0
 offset_top = 5.0
 offset_right = 262.0
 offset_bottom = 37.0
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-health_gradient = SubResource( 1 )
+script = ExtResource("1")
+health_gradient = SubResource("1")
 
 [node name="BackgroundRect" type="ColorRect" parent="."]
+layout_mode = 0
 offset_right = 257.0
 offset_bottom = 18.0
-color = Color( 0, 0, 0, 0.501961 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+color = Color(0, 0, 0, 0.501961)
 
 [node name="HealthRect" type="ColorRect" parent="."]
+layout_mode = 0
 offset_left = 2.0
 offset_top = 2.0
 offset_right = 255.0
 offset_bottom = 16.0
-__meta__ = {
-"_edit_use_anchors_": false
-}

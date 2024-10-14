@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b718rue2nvx74"]
 
-[ext_resource type="PackedScene" path="res://UI/HUD/HealthBar.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://c68jxul47yrf1" path="res://UI/HUD/HealthBar.tscn" id="1"]
 [ext_resource type="PackedScene" uid="uid://bur1ha4ucriai" path="res://UI/Inventory/InventoryDisplay.tscn" id="2"]
 
 [node name="UILayer" type="CanvasLayer"]

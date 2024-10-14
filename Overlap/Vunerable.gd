@@ -51,7 +51,6 @@ func _on_Vunerable_invincibility_ended():
 
 
 func _on_Vunerable_area_entered(area : Area3D):
-	print("vunerable ", str(self), " entered by area ", str(area))
 	var damage : float = 1
 	if "damage" in area:
 		damage = area.damage
@@ -60,7 +59,6 @@ func _on_Vunerable_area_entered(area : Area3D):
 
 
 func _on_Vunerable_body_entered(body : Node):
-	print("vunerable ", str(self), " entered by body ", str(body))
 	var damage : float = 1
 	if "damage" in body:
 		damage = body.damage

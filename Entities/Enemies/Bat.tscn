@@ -2,11 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://54q6c8oc6k81" path="res://Overlap/Vunerable.tscn" id="1"]
 [ext_resource type="PackedScene" path="res://Overlap/SoftCollision.tscn" id="2"]
-[ext_resource type="PackedScene" path="res://Classes/Stats.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://ckcetxv53psl7" path="res://Classes/Stats.tscn" id="3"]
 [ext_resource type="Script" path="res://Entities/Enemies/Bat.gd" id="4"]
 [ext_resource type="PackedScene" path="res://Overlap/PlayerDetectionZone.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://Entities/WanderController.tscn" id="6"]
-[ext_resource type="Material" path="res://Entities/state_material.tres" id="7"]
+[ext_resource type="Material" uid="uid://b1biajjgnrb4k" path="res://Entities/state_material.tres" id="7"]
 [ext_resource type="PackedScene" uid="uid://bkq64r1i5yxqs" path="res://Overlap/Damage.tscn" id="8"]
 
 [sub_resource type="Animation" id="8"]
@@ -121,7 +121,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedComponents/Body/LeftWingPivot/WingMesh:material/0:albedo_color")
+tracks/0/path = NodePath("AnimatedComponents/Body/LeftWingPivot/WingMesh:surface_material_override/0:albedo_color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -137,7 +137,7 @@ length = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatedComponents/Body/LeftWingPivot/WingMesh:material/0:albedo_color")
+tracks/0/path = NodePath("AnimatedComponents/Body/LeftWingPivot/WingMesh:surface_material_override/0:albedo_color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {

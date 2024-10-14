@@ -15,8 +15,16 @@ emission_shape = 1
 emission_sphere_radius = 1.0
 direction = Vector3(0, 1, 0)
 spread = 0.0
+initial_velocity_min = 30.0
+initial_velocity_max = 30.0
+angular_velocity_min = 20.0
+angular_velocity_max = 20.0
 gravity = Vector3(0, -80, 0)
 linear_accel_curve = SubResource("2")
+radial_accel_min = 45.0
+radial_accel_max = 45.0
+damping_min = 9.5
+damping_max = 10.5
 
 [sub_resource type="SphereMesh" id="4"]
 radial_segments = 4
