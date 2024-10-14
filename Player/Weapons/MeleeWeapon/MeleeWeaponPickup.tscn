@@ -1,15 +1,101 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=10 format=3 uid="uid://b0auwphm6305h"]
 
-[ext_resource path="res://Player/Weapons/WeaponPickup.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Player/Weapons/MeleeWeapon/MeleeWeapon.tres" type="PrismMesh" id=2]
-[ext_resource path="res://Player/Weapons/MeleeWeapon/MeleeWeapon.tscn" type="PackedScene" id=3]
+[ext_resource type="PackedScene" path="res://Player/Weapons/WeaponPickup.tscn" id="1"]
+[ext_resource type="PrismMesh" path="res://Player/Weapons/MeleeWeapon/MeleeWeapon.tres" id="2"]
+[ext_resource type="PackedScene" uid="uid://c15pbiuenojtk" path="res://Player/Weapons/MeleeWeapon/MeleeWeapon.tscn" id="3"]
 
-[node name="MeleeWeaponPickup" instance=ExtResource( 1 )]
-weapon = ExtResource( 3 )
+[sub_resource type="Animation" id="2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5, 0)]
+}
+
+[sub_resource type="Animation" id="3"]
+resource_name = "idle"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.999843, 0), Vector3(0, 1.012, 0), Vector3(0, 1.048, 0), Vector3(0, 1.103, 0), Vector3(0, 1.173, 0), Vector3(0, 1.25, 0), Vector3(0, 1.327, 0), Vector3(0, 1.397, 0), Vector3(0, 1.452, 0), Vector3(0, 1.488, 0), Vector3(0, 1.5, 0), Vector3(0, 1.488, 0), Vector3(0, 1.452, 0), Vector3(0, 1.397, 0), Vector3(0, 1.327, 0), Vector3(0, 1.25, 0), Vector3(0, 1.173, 0), Vector3(0, 1.103, 0), Vector3(0, 1.048, 0), Vector3(0, 1.012, 0), Vector3(0, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vgvt4"]
+_data = {
+"RESET": SubResource("2"),
+"idle": SubResource("3")
+}
+
+[sub_resource type="Animation" id="4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(35, 55, 35)]
+}
+
+[sub_resource type="Animation" id="5"]
+resource_name = "idle"
+length = 2.4
+loop_mode = 1
+step = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.2, 1.8, 2.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(35, -35, 35), Vector3(35, 55, 35), Vector3(35, 145, 35), Vector3(35, 235, 35), Vector3(35, 325, 35)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oqbcm"]
+_data = {
+"RESET": SubResource("4"),
+"idle": SubResource("5")
+}
+
+[node name="MeleeWeaponPickup" instance=ExtResource("1")]
+weapon = ExtResource("3")
 
 [node name="MeshInstance3D" parent="." index="0"]
-transform = Transform3D( 0.739339, 0.0558856, 0.67101, 0.469846, 0.67101, -0.573576, -0.482309, 0.739339, 0.469846, 0, 1.5, 0 )
-mesh = ExtResource( 2 )
-material/0 = null
+transform = Transform3D(0.739339, 0.0558856, 0.67101, 0.469846, 0.67101, -0.573576, -0.482309, 0.739339, 0.469846, 0, 1.5, 0)
+mesh = ExtResource("2")
+
+[node name="BobAnimation" parent="." index="1"]
+libraries = {
+"": SubResource("AnimationLibrary_vgvt4")
+}
+
+[node name="RotationAnimation" parent="." index="2"]
+libraries = {
+"": SubResource("AnimationLibrary_oqbcm")
+}
 
 [editable path="PlayerDetectionZone"]

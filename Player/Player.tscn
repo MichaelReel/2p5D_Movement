@@ -501,7 +501,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("10")
 
 [node name="Vunerable" parent="." instance=ExtResource("5")]
-collision_layer = 4
+collision_mask = 4
 
 [node name="CollisionShape3D" parent="Vunerable" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

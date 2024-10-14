@@ -39,4 +39,3 @@ func _on_Vunerable_invincibility_started():
 
 func _on_Vunerable_invincibility_ended():
 	animation_player.play("reset")
-

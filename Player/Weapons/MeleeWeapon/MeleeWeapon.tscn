@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://c15pbiuenojtk"]
 
 [ext_resource type="Script" path="res://Player/Weapons/MeleeWeapon/MeleeWeapon.gd" id="1"]
-[ext_resource type="PackedScene" path="res://Overlap/Damage.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://bkq64r1i5yxqs" path="res://Overlap/Damage.tscn" id="3"]
 [ext_resource type="PrismMesh" path="res://Player/Weapons/MeleeWeapon/MeleeWeapon.tres" id="4"]
 
 [sub_resource type="BoxShape3D" id="4"]
@@ -142,8 +142,8 @@ transform = Transform3D(0.422618, 0.906308, 0, -0.640856, 0.298836, 0.707107, 0.
 mesh = ExtResource("4")
 
 [node name="Damage" parent="." instance=ExtResource("3")]
-collision_layer = 0
-collision_mask = 16
+collision_layer = 16
+collision_mask = 0
 input_ray_pickable = false
 
 [node name="CollisionShape3D" parent="Damage" index="0"]
