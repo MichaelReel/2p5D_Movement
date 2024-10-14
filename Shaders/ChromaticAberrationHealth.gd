@@ -1,8 +1,8 @@
 extends ColorRect
 
 
-const offset_multiplier : float = 10.0
-const pulse_multiplier : float = 8.0
+@export var offset_multiplier : float = 10.0
+@export var pulse_multiplier : float = 8.0
 
 
 func _ready():
