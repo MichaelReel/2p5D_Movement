@@ -55,7 +55,7 @@ func _ready():
 
 func _physics_process(delta):
 	var input_vector := Input.get_vector("move_right", "move_left",  "move_backward", "move_forward")
-	perform_input_movement(delta, input_vector)
+	_perform_input_movement(delta, input_vector)
 	
 	# Gravity!
 	if not is_on_floor():
@@ -69,7 +69,6 @@ func _physics_process(delta):
 	set_velocity(velocity)
 	set_up_direction(Vector3.UP)
 	move_and_slide()
-	velocity = velocity
 	
 	if Input.is_action_just_pressed("move_attack"):
 		for weapon in weapon_wielder.get_children():
@@ -77,20 +76,38 @@ func _physics_process(delta):
 				weapon.perform_attack()
 
 	if Input.is_action_just_released("inventory_down"):
-		inventory.select_next_occupied_slot()
+		inventory.select_next_occupied_slot(true)
 		
 	if Input.is_action_just_released("inventory_up"):
 		inventory.select_next_occupied_slot(false)
 
 
-func perform_input_movement(delta : float, input_vector : Vector2):
+func pickup_weapon(item_scene : PackedScene, icon_mesh : Mesh) -> bool:
+	var item_instance = item_scene.instantiate()
+	return inventory.pickup_item(item_instance, icon_mesh)
+
+
+func rotate_upper_body(camera_rotation_delta: Vector3) -> void:
+	"""Rotate the upper body (or head, etc) to look where the camera has moved to"""
+	torso.rotation_degrees.y -= camera_rotation_delta.y
+	camera_pivot.rotation_degrees.y -= camera_rotation_delta.y
+	
+	# TODO: Add check to see if weapon could use the up/down rotation delta
+
+func _perform_input_movement(delta : float, input_vector : Vector2):
 	# Get the basis of the player facing direction in 2 Dimensions
-	var facing_basis : Basis = torso.global_basis #  .transform.basis
-	var basis_z := Vector2(facing_basis.z.x, facing_basis.z.z)
-	var basis_x := Vector2(facing_basis.x.x, facing_basis.x.z)
+	var facing_basis : Basis = torso.global_basis
+	
+	# Convert basis Vector3 to Vector2, excluding the y component
+	var horizontal_basis_z := Vector2(facing_basis.z.x, facing_basis.z.z) 
+	var horizontal_basis_x := Vector2(facing_basis.x.x, facing_basis.x.z)
+	
 	if input_vector != Vector2.ZERO and _movement_allowed():
 		# Speed up - Apply player WSAD movement as horizontal acceleration
-		var horizonal_dir := basis_z * input_vector.y + basis_x * input_vector.x
+		var horizonal_dir: Vector2 = (
+			horizontal_basis_z * input_vector.y + 
+			horizontal_basis_x * input_vector.x
+		)
 		horizontal_velocity = horizontal_velocity.move_toward(
 			horizonal_dir * max_speed, acceleration * delta
 		)
@@ -102,9 +119,10 @@ func perform_input_movement(delta : float, input_vector : Vector2):
 		if is_on_floor():
 			friction = ground_friction
 		horizontal_velocity = horizontal_velocity.move_toward(Vector2.ZERO, friction * delta)
-		_rotate_lower_body(basis_z)
+		_rotate_lower_body(horizontal_basis_z)
 		_try_state(STAND)
-		
+	
+	# Update the horizontal components of velocity only, jump/fall is handled separately
 	velocity.x = horizontal_velocity.x
 	velocity.z = horizontal_velocity.y
 
@@ -228,11 +246,6 @@ func _play_body_running_animation():
 		lower_body_animation_player.play_backwards("run")
 	else:
 		lower_body_animation_player.play("run")
-
-
-func pickup_weapon(item_scene : PackedScene, icon_mesh : Mesh) -> bool:
-	var item_instance = item_scene.instantiate()
-	return inventory.pickup_item(item_instance, icon_mesh)
 
 
 func _on_Inventory_item_selected(item_instance, _index):

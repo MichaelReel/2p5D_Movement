@@ -31,7 +31,7 @@ func _physics_process(delta: float) -> void:
 	rotation_degrees.x = clamp(rotation_degrees.x, min_look_angle, max_look_angle)
 	
 	# Rotate the player left and right
-	player.rotation_degrees.y -= cam_rot.y
+	player.rotate_upper_body(cam_rot)
 	
 	# Clear the mouse_delta
 	mouse_delta = Vector2.ZERO

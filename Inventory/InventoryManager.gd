@@ -38,6 +38,7 @@ func pickup_item(item : Node3D, mesh : Mesh) -> bool:
 	return false
 
 
+# TODO: Change this bool to an ENUM, using a bool here sucks
 func select_next_occupied_slot(down : bool = true):
 	# find the next occupied slot in a given direction
 	print("next slot in " + ("down" if down else "up") + " direction")
