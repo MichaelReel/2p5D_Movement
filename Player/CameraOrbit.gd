@@ -8,15 +8,21 @@ extends Node3D
 var mouse_delta : Vector2 = Vector2.ZERO
 
 @onready var player : Node3D = get_parent()
-@onready var camera := $Camera3D
+@onready var camera := %Camera3D
 
 
-func _input(event : InputEvent):
-	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+func _input(event: InputEvent) -> void:
+	var is_camera_motion := (
+		event is InputEventMouseMotion and
+		Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
+	)
+	if is_camera_motion:
 		mouse_delta = event.relative
+	else:
+		mouse_delta = Input.get_vector("look_right", "look_left",  "look_down", "look_up")
 
 
-func _process(delta : float):
+func _physics_process(delta: float) -> void:
 	# Get the input mouse movement
 	var cam_rot = Vector3(mouse_delta.y, mouse_delta.x, 0) * look_sensitivity * delta
 	
@@ -33,6 +39,6 @@ func _process(delta : float):
 
 func move_camera_to_scene(new_scene : Node3D):
 	var cam_transform : Transform3D = camera.global_transform
-	remove_child(camera)
+	camera.get_parent_node_3d().remove_child(camera)
 	new_scene.add_child(camera)
 	camera.global_transform = cam_transform

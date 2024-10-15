@@ -13,26 +13,33 @@ enum {
 	STAND
 }
 
+@export_group("Movement")
+@export var max_speed := 5.0
 @export var acceleration := 150.0
 @export var air_friction := 4.0
 @export var ground_friction := 80.0
-@export var max_speed := 5.0
 @export var jump_force := 10.0
 @export var gravity := 25.0
 @export var air_control := true
+
+@export_group("Invincibility")
 @export var spawn_timeout := 1.0
 @export var hurt_timeout := 0.3
 
-@onready var torso := $Body/Torso
-@onready var weapon_weilder := $Body/Torso/WeaponWielder
-@onready var hurt_box := $Vunerable
-@onready var invincibility_animation_player := $InvincibilityAnimationPlayer
-@onready var lower_body := $Body/Waist
-@onready var lower_body_animation_player := $Body/Waist/AnimationPlayer
-@onready var camera_arm := $Body/Torso/CameraOrbit
-@onready var stats := PlayerStats
-@onready var inventory := InventoryManager
-@onready var parent := get_parent()
+# External nodes
+@onready var stats: Node = PlayerStats
+@onready var inventory: Node = InventoryManager
+@onready var parent: Node3D = get_parent()
+
+# Internal nodes
+@onready var torso: Node3D = $Body/Torso
+@onready var lower_body: Node3D = $Body/Waist
+@onready var weapon_wielder: Node3D = %WeaponWielder
+@onready var hurt_box: Area3D = $Vunerable
+@onready var invincibility_animation_player: AnimationPlayer = %InvincibilityAnimationPlayer
+@onready var lower_body_animation_player: AnimationPlayer = %AnimationPlayer
+@onready var camera_pivot: Node3D = %CameraPivot
+@onready var camera_3d: Camera3D = %Camera3D
 
 var horizontal_velocity := Vector2.ZERO
 var ground_orientation := Vector2.UP
@@ -47,7 +54,7 @@ func _ready():
 
 
 func _physics_process(delta):
-	var input_vector := _normalized_input_vector()
+	var input_vector := Input.get_vector("move_right", "move_left",  "move_backward", "move_forward")
 	perform_input_movement(delta, input_vector)
 	
 	# Gravity!
@@ -65,7 +72,7 @@ func _physics_process(delta):
 	velocity = velocity
 	
 	if Input.is_action_just_pressed("move_attack"):
-		for weapon in weapon_weilder.get_children():
+		for weapon in weapon_wielder.get_children():
 			if weapon.has_method("perform_attack"):
 				weapon.perform_attack()
 
@@ -78,7 +85,7 @@ func _physics_process(delta):
 
 func perform_input_movement(delta : float, input_vector : Vector2):
 	# Get the basis of the player facing direction in 2 Dimensions
-	var facing_basis : Basis = torso.transform.basis
+	var facing_basis : Basis = torso.global_basis #  .transform.basis
 	var basis_z := Vector2(facing_basis.z.x, facing_basis.z.z)
 	var basis_x := Vector2(facing_basis.x.x, facing_basis.x.z)
 	if input_vector != Vector2.ZERO and _movement_allowed():
@@ -142,13 +149,6 @@ func _movement_allowed() -> bool:
 	return air_control or is_on_floor()
 
 
-func _normalized_input_vector() -> Vector2:
-	return Vector2(
-		Input.get_action_strength("move_left") - Input.get_action_strength("move_right"),
-		Input.get_action_strength("move_forward") - Input.get_action_strength("move_backward")
-	).normalized()
-
-
 func _on_Vunerable_damage_received(damage):
 	stats.health -= damage
 	hurt_box.start_invincibility(hurt_timeout)
@@ -165,7 +165,7 @@ func _on_Vunerable_invincibility_ended():
 
 
 func _move_camera_to_parent():
-	camera_arm.move_camera_to_scene(parent)
+	camera_pivot.move_camera_to_scene(parent)
 
 
 func _create_death_effect():
@@ -236,6 +236,6 @@ func pickup_weapon(item_scene : PackedScene, icon_mesh : Mesh) -> bool:
 
 
 func _on_Inventory_item_selected(item_instance, _index):
-	for child in weapon_weilder.get_children():
-		weapon_weilder.remove_child(child)
-	weapon_weilder.add_child(item_instance)
+	for child in weapon_wielder.get_children():
+		weapon_wielder.remove_child(child)
+	weapon_wielder.add_child(item_instance)
