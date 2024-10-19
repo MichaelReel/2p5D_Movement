@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://de4y5850dvj46"]
+[gd_scene load_steps=9 format=3 uid="uid://de4y5850dvj46"]
 
 [ext_resource type="Script" path="res://Player/Weapons/RangeWeapon/Projectile.gd" id="1"]
 
@@ -11,6 +11,30 @@ rings = 1
 [sub_resource type="CapsuleShape3D" id="2"]
 radius = 0.05
 height = 0.1
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uawuv"]
+radial_velocity_min = -2.23517e-05
+radial_velocity_max = 1.99998
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_d6whg"]
+offsets = PackedFloat32Array(0.215426, 0.630319)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ja48l"]
+gradient = SubResource("Gradient_d6whg")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ex4h"]
+transparency = 1
+blend_mode = 1
+albedo_texture = SubResource("GradientTexture2D_ja48l")
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_1o00v"]
+material = SubResource("StandardMaterial3D_3ex4h")
+size = Vector2(0.12, 0.12)
 
 [node name="Projectile" type="CharacterBody3D"]
 collision_layer = 16
@@ -26,5 +50,10 @@ shape = SubResource("2")
 wait_time = 0.5
 one_shot = true
 autostart = true
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+lifetime = 0.2
+process_material = SubResource("ParticleProcessMaterial_uawuv")
+draw_pass_1 = SubResource("QuadMesh_1o00v")
 
 [connection signal="timeout" from="LifeTimer" to="." method="_on_Timer_timeout"]
