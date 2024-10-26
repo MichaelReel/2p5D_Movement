@@ -9,6 +9,7 @@
 [ext_resource type="Material" uid="uid://cmcq7mmatmq7w" path="res://Player/PlayerColor.tres" id="8"]
 
 [sub_resource type="CapsuleShape3D" id="3"]
+radius = 0.275
 height = 1.9
 
 [sub_resource type="CapsuleMesh" id="1"]
@@ -377,9 +378,10 @@ _data = {
 [sub_resource type="SphereShape3D" id="SphereShape3D_xksh0"]
 
 [sub_resource type="CapsuleShape3D" id="10"]
-radius = 0.45
+radius = 0.25
 
 [sub_resource type="CapsuleShape3D" id="11"]
+radius = 0.25
 
 [sub_resource type="Animation" id="14"]
 resource_name = "start"

@@ -6,6 +6,7 @@ extends Node3D
 @export var retaining_wall_height := 10 # (int, 1, 10)
 @export var noise_threshold := 0.20
 @export var threshold_per_level := 0.05
+@export var noise := FastNoiseLite.new()
 
 
 @onready var nav_mesh := $NavigationRegion3D
@@ -17,25 +18,24 @@ extends Node3D
 @onready var cube_rock := mesh_lib.find_item_by_name("cube_rock")
 @onready var cube_grass := mesh_lib.find_item_by_name("cube_grass")
 @onready var space := GridMap.INVALID_CELL_ITEM
-@onready var noise := FastNoiseLite.new()
 
 
 func _ready():
 	_create_flat_base()
-	_setup_noise()
+	#_setup_noise()
 	_create_water_features()
-	_setup_noise()
+	#_setup_noise()
 	_create_noise_layers()
 	_create_retaining_wall()
 	nav_mesh.bake_navigation_mesh(false)
 
 
-func _setup_noise():
+#func _setup_noise():
 #	randomize()
-	noise.seed = randi()
-	noise.fractal_octaves = 2
-	noise.period = 20.0
-	noise.persistence = 0.8
+	#noise.seed = randi()
+	#noise.fractal_octaves = 2
+	#noise.period = 20.0
+	#noise.persistence = 0.8
 
 
 func _create_flat_base():

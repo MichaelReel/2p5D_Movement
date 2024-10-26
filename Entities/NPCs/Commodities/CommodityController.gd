@@ -81,5 +81,3 @@ func _on_CommodityExtractionZone_commodity_available(type : int) -> void:
 
 func _on_ExtractTimer_timeout() -> void:
 	commodity_map[extracting].extract()
-
-

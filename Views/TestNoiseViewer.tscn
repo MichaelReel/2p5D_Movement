@@ -1,18 +1,34 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://cwkqwvukfvohb"]
 
-[ext_resource path="res://Entities/Enemies/Bat.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Entities/TestBody.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Terrain/Terrain.tscn" type="PackedScene" id=4]
+[ext_resource type="PackedScene" uid="uid://cvyvi7tv75f8t" path="res://Entities/Enemies/Bat.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://difdxryx8xs2r" path="res://Player/Player.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://Entities/TestBody.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://dvjwmixg4mexg" path="res://Terrain/GridMap/Terrain.tscn" id="4"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kjivy"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_wwx5n"]
+sky_material = SubResource("ProceduralSkyMaterial_kjivy")
+
+[sub_resource type="Environment" id="Environment_vna57"]
+background_mode = 2
+sky = SubResource("Sky_wwx5n")
+tonemap_mode = 2
+glow_enabled = true
 
 [node name="TestNoiseViewer" type="Node3D"]
 
-[node name="Terrain" parent="." instance=ExtResource( 4 )]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vna57")
 
-[node name="Bat" parent="Terrain" instance=ExtResource( 1 )]
-transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.29695, 15.9281 )
+[node name="Terrain" parent="." instance=ExtResource("4")]
 
-[node name="TestBody" parent="." instance=ExtResource( 3 )]
+[node name="Bat" parent="Terrain" instance=ExtResource("1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.29695, 15.9281)
 
-[node name="Player" parent="." instance=ExtResource( 2 )]
-transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.57714, 5.244, -5.75234 )
+[node name="TestBody" parent="." instance=ExtResource("3")]
+
+[node name="Player" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.57714, 5.244, -5.75234)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dvjwmixg4mexg"]
 
-[ext_resource type="Script" path="res://Terrain/Terrain.gd" id="1"]
+[ext_resource type="Script" path="res://Terrain/GridMap/Terrain.gd" id="1"]
 [ext_resource type="MeshLibrary" path="res://MeshLibrary/MeshLibrary.meshlib" id="2"]
 
 [sub_resource type="NavigationMesh" id="1"]
