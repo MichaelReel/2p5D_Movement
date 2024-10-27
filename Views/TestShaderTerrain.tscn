@@ -16,9 +16,9 @@ sky = SubResource("Sky_3lb2d")
 tonemap_mode = 2
 glow_enabled = true
 
-[node name="Node3D" type="Node3D"]
+[node name="TestShaderTerrain" type="Node3D"]
 
-[node name="TestShaderTerrain" parent="." instance=ExtResource("1_k76ta")]
+[node name="ShaderTerrain" parent="." instance=ExtResource("1_k76ta")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_5h4wi")

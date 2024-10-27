@@ -7,7 +7,7 @@ signal computation_complete
 @export var noise_texture: NoiseTexture2D
 ## Base should be 128 by 128 to match the image size
 @export var base_texture: GradientTexture2D
-@export var mix_value: float = 5000.0
+@export var mix_value: float = 5.0
 ## If this is changed from 128 by 128, the textures and the relying meshes will need updated
 @export var image_size: Vector2i = Vector2i(101, 101)
 
