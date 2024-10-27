@@ -1,0 +1,14 @@
+[remap]
+
+importer="glsl"
+type="RDShaderFile"
+uid="uid://dt58khdx887nj"
+path="res://.godot/imported/compute_terrain.glsl-ab002c7cd54229f7a5a184961c7af04f.res"
+
+[deps]
+
+source_file="res://Terrain/HeightMap/compute_terrain.glsl"
+dest_files=["res://.godot/imported/compute_terrain.glsl-ab002c7cd54229f7a5a184961c7af04f.res"]
+
+[params]
+
