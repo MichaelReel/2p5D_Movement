@@ -16,7 +16,7 @@ func _ready() -> void:
 	if terrain_compute_dispatcher.has_method("dispatch"):
 		terrain_compute_dispatcher.call("dispatch")
 	else:
-		printerr("Oh no!")
+		printerr("Couldn't run dispatch on dispatcher!")
 		return
 	
 	var vertices: PackedVector3Array = await terrain_compute_dispatcher.get_output_vertices()

@@ -19,12 +19,27 @@ var _rd: RenderingDevice
 var _glsl_local_size: Vector3i
 var _shader_rid: RID
 
-var _input_output_mappings: Dictionary = {
-	"argument_buffer": {"rid": null},
-	"noise_texure": {"rid": null},
-	"base_texure": {"rid": null},
-	"output_texure": {"rid": null},
-	"output_vector": {"rid": null},
+@onready var _input_output_mappings: Dictionary = {
+	"argument_buffer": {
+		"rid": null,
+		"binding": 0,
+	},
+	"noise_texture": {
+		"rid": null,
+		"binding": 1,
+	},
+	"base_texture": {
+		"rid": null,
+		"binding": 2,
+	},
+	"output_texture": {
+		"rid": null,
+		"binding": 3,
+	},
+	"output_vector": {
+		"rid": null,
+		"binding": 4,
+	},
 }
 
 var _uniform_set_rid : RID
@@ -68,11 +83,15 @@ func _prepare_argument_input_data() -> void:
 	# Create a uniform to assign the buffer to the rendering device
 	var uniform := RDUniform.new()
 	uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	uniform.binding = 0 # this needs to match the "binding" in our shader file
+	uniform.binding = _input_output_mappings["argument_buffer"]["binding"]
 	uniform.add_id(_input_output_mappings["argument_buffer"]["rid"])
 	_bindings.append(uniform)
 
-func _create_texture_and_uniform(image: Image, format: RDTextureFormat, binding: int) -> RID:
+func _create_texture_and_uniform(
+	image: Image,
+	format: RDTextureFormat,
+	binding: int,
+) -> RID:
 	var view := RDTextureView.new()
 	var data: PackedByteArray = image.get_data()
 	var texture_id: RID = _rd.texture_create(format, view, [data])
@@ -119,9 +138,21 @@ func _prepare_texture_uniforms() -> void:
 	)
 	var output_format: RDTextureFormat = _texture_format(output_image_buffer)
 	
-	_input_output_mappings["noise_texure"]["rid"] = _create_texture_and_uniform(noise_image, noise_input_format, 1)
-	_input_output_mappings["base_texure"]["rid"] = _create_texture_and_uniform(base_image, base_input_format, 2)
-	_input_output_mappings["output_texure"]["rid"] = _create_texture_and_uniform(output_image_buffer, output_format, 3)
+	_input_output_mappings["noise_texture"]["rid"] = _create_texture_and_uniform(
+		noise_image, 
+		noise_input_format, 
+		_input_output_mappings["noise_texture"]["binding"],
+	)
+	_input_output_mappings["base_texture"]["rid"] = _create_texture_and_uniform(
+		base_image,
+		base_input_format,
+		_input_output_mappings["base_texture"]["binding"],
+	)
+	_input_output_mappings["output_texture"]["rid"] = _create_texture_and_uniform(
+		output_image_buffer,
+		output_format,
+		_input_output_mappings["output_texture"]["binding"],
+	)
 
 func _prepare_vector_array_output_data() -> void:
 	var vector_buffer: PackedVector4Array = PackedVector4Array()
@@ -129,12 +160,14 @@ func _prepare_vector_array_output_data() -> void:
 	
 	# Create a storage buffer that can hold our vector values.
 	var output_bytes: PackedByteArray = vector_buffer.to_byte_array()
-	_input_output_mappings["output_vector"]["rid"] = _rd.storage_buffer_create(output_bytes.size(), output_bytes)
+	_input_output_mappings["output_vector"]["rid"] =(
+		_rd.storage_buffer_create(output_bytes.size(), output_bytes)
+	)
 	
 	# Create a uniform to assign the buffer to the rendering device
 	var uniform := RDUniform.new()
 	uniform.uniform_type = RenderingDevice.UNIFORM_TYPE_STORAGE_BUFFER
-	uniform.binding = 4 # this needs to match the "binding" in our shader file
+	uniform.binding = _input_output_mappings["output_vector"]["binding"]
 	uniform.add_id(_input_output_mappings["output_vector"]["rid"])
 	_bindings.append(uniform)
 
@@ -160,14 +193,16 @@ func _submit_to_gpu_and_sync() -> void:
 
 func _extract_input_output_arguments() -> void:
 	# Read back the data from the buffer
-	var output_bytes : PackedByteArray = _rd.buffer_get_data(_input_output_mappings["argument_buffer"]["rid"])
+	var output_bytes : PackedByteArray = (
+		_rd.buffer_get_data(_input_output_mappings["argument_buffer"]["rid"])
+	)
 	var output : PackedFloat32Array = output_bytes.to_float32_array()
 	print("Output: ", output, " (arg_id: " , _input_output_mappings["argument_buffer"]["rid"], ")")
 	
 
 func _extract_output_data() -> void:
 	# Read back the data from the buffers
-	var image_bytes : PackedByteArray = _rd.texture_get_data(_input_output_mappings["output_texure"]["rid"], 0)
+	var image_bytes : PackedByteArray = _rd.texture_get_data(_input_output_mappings["output_texture"]["rid"], 0)
 	output_image = Image.create_from_data(image_size.x, image_size.y, false, Image.FORMAT_RGBA8, image_bytes)
 	
 	var vector_bytes: PackedByteArray = _rd.buffer_get_data(_input_output_mappings["output_vector"]["rid"], 0)
@@ -179,6 +214,11 @@ func _extract_output_data() -> void:
 	
 	print(len(output_vertices), " (arg_id: " , _input_output_mappings["output_vector"]["rid"], ")")
 	#_renderer.texture = ImageTexture.create_from_image(output_image)
+
+func _clean_up() ->void:
+	for mapping in _input_output_mappings:
+		_rd.free_rid(_input_output_mappings[mapping]["rid"])
+	_rd.free_rid(_shader_rid)
 
 func dispatch() -> void:
 	await noise_texture.changed
@@ -193,6 +233,7 @@ func dispatch() -> void:
 	_extract_input_output_arguments()
 	_extract_output_data()
 	computation_complete.emit()
+	_clean_up()
 
 #endregion
 
