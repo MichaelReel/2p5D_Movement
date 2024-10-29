@@ -29,7 +29,7 @@ enum {
 # External nodes
 @onready var stats: Node = PlayerStats
 @onready var inventory: Node = InventoryManager
-@onready var parent: Node3D = get_parent()
+@onready var parent: Node = get_parent()
 
 # Internal nodes
 @onready var torso: Node3D = $Body/Torso
