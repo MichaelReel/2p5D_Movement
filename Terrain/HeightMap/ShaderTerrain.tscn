@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://d00v4c0s2rw0j" path="res://Terrain/HeightMap/test_shader_terrain_base_mass.tres" id="5_7l6td"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_yaeyl"]
-size = Vector2(127, 127)
+size = Vector2(128, 128)
 subdivide_width = 126
 subdivide_depth = 126
 
